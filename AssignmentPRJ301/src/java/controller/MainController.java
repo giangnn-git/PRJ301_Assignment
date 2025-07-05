@@ -35,6 +35,7 @@ public class MainController extends HttpServlet {
             System.out.println(action);
             if (isUserAction(action)) {
                 url = "/UserController";
+                System.out.println("flag");
             } 
         } catch (Exception e) {
             System.out.println("error in ProcessrRequest: " + e);
