@@ -24,15 +24,7 @@ import model.ProductDTO;
 @WebServlet(name = "ProductController", urlPatterns = {"/ProductController"})
 public class ProductController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -42,7 +34,7 @@ public class ProductController extends HttpServlet {
             if("search".equals(action)){
                 url = handleSearch(request,response);
             }else if("add".equals(action)){
-                url = handleAdd(request,response);
+                url = handleAddProduct(request,response);
             }else if("changeStatus".equals(action)){
                 url = handleChangeStatus(request,response);
             }
@@ -106,7 +98,7 @@ public class ProductController extends HttpServlet {
         return "Menu.jsp";
     }
 
-private String handleAdd(HttpServletRequest request, HttpServletResponse response) {
+private String handleAddProduct(HttpServletRequest request, HttpServletResponse response) {
     String checkError = "";
     String message = "";
 
@@ -158,7 +150,7 @@ private String handleAdd(HttpServletRequest request, HttpServletResponse respons
     // If no error, create ProductDTO and add to DB
     if (checkError.isEmpty()) {
         p = new ProductDTO(0, productName, description, price, imageUrl, available, 0);
-        if (!pdao.add(p)) {
+        if (!pdao.addProduct(p)) {
             checkError += "Cannot add product: " + p.getProductName() + "<br/>";
         } else {
             message = "Add successfully.";

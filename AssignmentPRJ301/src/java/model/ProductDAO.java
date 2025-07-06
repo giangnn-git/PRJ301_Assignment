@@ -53,7 +53,7 @@ public class ProductDAO {
     }
     
     
-    public static boolean add(ProductDTO p){
+    public static boolean addProduct(ProductDTO p){
         boolean success = false;
         Connection conn = null;
         PreparedStatement ps = null;
