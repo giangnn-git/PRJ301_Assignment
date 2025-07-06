@@ -60,3 +60,21 @@ INSERT INTO dbo.tblUsers (userName, fullName, email, password, phone, address, r
 ('shipper1',  'Pham Thi Binh',   'shipper1@example.com',  '1',   '0988776655', '789 Shipper Rd', 'SHIPPER');
 GO
 
+CREATE TABLE dbo.tblProducts (
+    productId INT IDENTITY(1,1) PRIMARY KEY,
+    productName NVARCHAR(100) NOT NULL,
+    description NVARCHAR(500),
+    price FLOAT NOT NULL CHECK (price >= 0),
+    imageUrl NVARCHAR(255),
+    available BIT NOT NULL DEFAULT 1, -- true/false
+    categoryId INT NOT NULL
+);
+GO
+
+INSERT INTO dbo.tblProducts (productName, description, price, imageUrl, available, categoryId)
+VALUES
+(N'Banh mi thit', N'Banh mi kep thit heo, rau, dua leo', 15000, N'/images/banhmi.jpg', 1, 1),
+(N'Com ga', N'Com trang voi ga chien gion', 30000, N'/images/comga.jpg', 1, 2),
+(N'Nuoc cam', N'Nuoc ep cam nguyen chat', 12000, N'/images/nuoccam.jpg', 1, 3),
+(N'Mi xao bo', N'Mi xao bo voi rau cai', 25000, N'/images/mixaobo.jpg', 0, 2);
+GO
