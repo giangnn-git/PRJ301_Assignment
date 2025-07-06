@@ -151,7 +151,7 @@ public class UserController extends HttpServlet {
     }
 
     // Email
-    if (email == null || email.trim().isEmpty()) {
+    if (email == null || email.isEmpty()) {
         checkError += "Email is required.<br/>";
     } else if (email.length() > 100) {
         checkError += "Email cannot exceed 100 characters.<br/>";

@@ -116,17 +116,16 @@ public class UserDAO {
     }
 
     return success;
-}
+    }
 
     public boolean isEmailExists(String email) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "";
 
         try {
             conn = DbUtils.getConnection();
-            ps = conn.prepareStatement(sql);
+            ps = conn.prepareStatement(CHECK_EMAIL);
             ps.setString(1, email);
             rs = ps.executeQuery();
             return rs.next(); // Nếu tìm thấy email => true
@@ -155,4 +154,6 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-}
+
+    
+ }

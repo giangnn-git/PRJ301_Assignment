@@ -23,6 +23,12 @@
         <h1>Welcome <%= user.getFullName() %>!</h1> <br>
         <a href="MainController?action=logout" >Log Out</a>
 
+        
+        <form action="MainController" method="action">
+            <input type="hidden" name="action" value="search"/>
+            <input type="text" name="productName"/><br/>
+            <input type="submit" value ="search"/>
+        </form>
         <% } else { %>
             <%= AuthUtils.getAccessDeniedMessage("welcome.jsp") %><br/>
             (Or <a href="<%= AuthUtils.getLoginURL() %>">Login</a>)
