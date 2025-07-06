@@ -20,8 +20,8 @@
                 UserDTO user = AuthUtils.getCurrentUser(request);
                 String keyword = (String) request.getAttribute("keyword");
         %>
-        <h1>Welcome <%= user.getFullName() %>!</h1> <br>
-        <a href="MainController?action=logout" >Log Out</a>
+        <h1>Welcome <%= user.getFullName() %>!</h1> 
+        <a href="MainController?action=logout" >Log Out</a> <br>
 
         
         <form action="MainController" method="action">
