@@ -21,8 +21,11 @@ import model.UserDTO;
 @WebServlet(name = "UserController", urlPatterns = {"/UserController"})
 public class UserController extends HttpServlet {
     
+    UserDAO udao = new UserDAO();
+    
     private static final String WELCOME_PAGE = "welcome.jsp";
     private static final String LOGIN_PAGE = "login.jsp";
+    private static final String REGISTER_PAGE = "register.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -31,9 +34,12 @@ public class UserController extends HttpServlet {
         try {
             String action = request.getParameter("action");
             if ("login".equals(action)) {
+                System.out.println("LoginACtion");
                 url = handleLogin(request, response);
             } else if ("logout".equals(action)) {
                 url = handleLogout(request, response);
+            } else if ("register".equals(action)) {
+                url = handleRegister(request, response);
             }   
         } catch (Exception e) {
         } finally {
@@ -110,5 +116,79 @@ public class UserController extends HttpServlet {
         }
         return LOGIN_PAGE;
     }
+
+   private String handleRegister(HttpServletRequest request, HttpServletResponse response) {
+    String checkError = "";
+    String message = "";
+
+    String userName = request.getParameter("userName");
+    String fullName = request.getParameter("fullName");
+    String email = request.getParameter("email");
+    String password = request.getParameter("password");
+    String phone = request.getParameter("phone");
+    String address = request.getParameter("address");
+    String role = "CUSTOMER"; 
+
+    //Nếu userName rỗng (chưa nhập gì), thì chỉ trả về form, không xử lý
+    if (userName == null && fullName == null && email == null && password == null) {
+        return "register.jsp";
+    }
+    
+    // Username
+    if (userName == null || userName.isEmpty()) {
+        checkError += "Username is required.<br/>";
+    } else if (userName.length() > 50) {
+        checkError += "Username cannot exceed 50 characters.<br/>";
+    } else if (udao.getUserByUserName(userName) != null) {
+        checkError += "Username already exists.<br/>";
+    }
+
+    // Full Name
+    if (fullName == null || fullName.isEmpty()) {
+        checkError += "Full Name is required.<br/>";
+    } else if (fullName.length() > 100) {
+        checkError += "Full Name cannot exceed 100 characters.<br/>";
+    }
+
+    // Email
+    if (email == null || email.trim().isEmpty()) {
+        checkError += "Email is required.<br/>";
+    } else if (email.length() > 100) {
+        checkError += "Email cannot exceed 100 characters.<br/>";
+    } else if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        checkError += "Invalid email format.<br/>";
+    } else if (udao.isEmailExists(email)) {
+        checkError += "Email already exists.<br/>";
+    }
+
+    // Password
+    if (password == null || password.trim().isEmpty()) {
+        checkError += "Password is required.<br/>";
+    } else if (password.length() < 6) {
+        checkError += "Password must be at least 6 characters.<br/>";
+    }
+
+    // phone và address (cho phép null)
+
+    UserDTO user = new UserDTO(0, userName, fullName, email, password, phone, address, role);
+
+    if (checkError.isEmpty()) {
+        if (udao.registerUser(user)) {
+            message = "Register successful! You can now log in.";
+            request.setAttribute("message", message);
+            return "login.jsp";
+        } else {
+            checkError += "Failed to register user.<br/>";
+        }
+    }
+
+    // Nếu có lỗi hoặc không thành công
+    request.setAttribute("checkError", checkError);
+    request.setAttribute("user", user);  
+
+    return "register.jsp";
+}
+
+
     
 }

@@ -23,7 +23,8 @@ public class MainController extends HttpServlet {
     private boolean isUserAction(String action) {
         return "login".equals(action)
                 || "logout".equals(action)
-                || "register".equals(action);
+                || "register".equals(action)
+                ;
     }
 
  
@@ -36,7 +37,6 @@ public class MainController extends HttpServlet {
             System.out.println(action);
             if (isUserAction(action)) {
                 url = "/UserController";
-                System.out.println("MAinController");
             } 
         } catch (Exception e) {
             System.out.println("error in ProcessrRequest: " + e);

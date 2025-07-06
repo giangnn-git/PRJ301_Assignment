@@ -35,11 +35,11 @@ public class AuthUtils {
     }
     
     public static boolean isAdmin(HttpServletRequest request){
-        return hasRole(request, "AD");
+        return hasRole(request, "ADMIN");
     }
     
     public static boolean isMember(HttpServletRequest request){
-        return hasRole(request, "MB");
+        return hasRole(request, "CUSTOMER");
     }
     
     public static String getLoginURL(){
