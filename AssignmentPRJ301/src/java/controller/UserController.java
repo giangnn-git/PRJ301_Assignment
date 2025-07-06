@@ -5,12 +5,14 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.UserDAO;
+import model.UserDTO;
 
 /**
  *
@@ -18,30 +20,24 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "UserController", urlPatterns = {"/UserController"})
 public class UserController extends HttpServlet {
+    
+    private static final String WELCOME_PAGE = "welcome.jsp";
+    private static final String LOGIN_PAGE = "login.jsp";
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UserController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UserController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+         String url = LOGIN_PAGE;
+        try {
+            String action = request.getParameter("action");
+            if ("login".equals(action)) {
+                url = handleLogin(request, response);
+            } else if ("logout".equals(action)) {
+                url = handleLogout(request, response);
+            }   
+        } catch (Exception e) {
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 
@@ -84,4 +80,35 @@ public class UserController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private String handleLogin(HttpServletRequest request, HttpServletResponse response) {
+        String url = LOGIN_PAGE;
+        HttpSession session = request.getSession();
+        String userName = request.getParameter("strUserName");
+        String password = request.getParameter("strPassword");
+//        password = PasswordUtils.encryptSHA256(password);
+        UserDAO userDAO = new UserDAO();
+        if (userDAO.login(userName, password)) {
+            // Dang nhap thanh cong
+            url = "welcome.jsp";
+            UserDTO user = userDAO.getUserByUserName(userName);
+            session.setAttribute("user", user);
+        } else {
+            // Dang nhap that bai
+            url = "login.jsp";
+            request.setAttribute("message", "User Name or Password incorrect!");
+        }
+        return url;
+    }
+
+     private String handleLogout(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        if(session!=null){
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            if(user!=null){
+                session.invalidate();
+            }
+        }
+        return LOGIN_PAGE;
+    }
+    
 }

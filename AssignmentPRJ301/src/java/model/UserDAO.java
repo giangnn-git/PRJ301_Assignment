@@ -1,87 +1,93 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import utils.DbUtils;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "UserDAO", urlPatterns = {"/UserDAO"})
-public class UserDAO extends HttpServlet {
+public class UserDAO {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UserDAO</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UserDAO at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+    private static final String FIND_USER_BY_NAME
+            = "SELECT userId, userName, email, password, phone, address, role, fullName FROM tblUsers WHERE userName = ?";
+
+    private static final String GET_ALL_USER
+            = "SELECT userId, userName, email, password, phone, address, role, fullName FROM tblUsers ORDER BY userName";
+
+    public boolean login(String userName, String password) {
+        UserDTO user = getUserByUserName(userName);
+        if (user != null) {
+            if (user.getPassword().equals(password)) {
+                return true;
+            }
         }
+        return false;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    public UserDTO getUserByUserName(String uName) {
+        UserDTO user = null;
+        
+        try (
+            Connection conn = DbUtils.getConnection();  
+            PreparedStatement pr = conn.prepareStatement(FIND_USER_BY_NAME)) {
+            pr.setString(1, uName);
+            ResultSet rs = pr.executeQuery();
+
+            if (rs.next()) {
+                int userId = rs.getInt("userId");
+                String userName = rs.getString("userName");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String role = rs.getString("role");
+
+                user = new UserDTO(userId, userName, fullName, email, password, phone, address, role);
+            }
+
+            rs.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+    public List<UserDTO> getAllUsers() {
+        List<UserDTO> userList = new ArrayList<>();
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        try (
+                Connection conn = DbUtils.getConnection();  
+                PreparedStatement ps = conn.prepareStatement(GET_ALL_USER);  
+                ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                int userId = rs.getInt("userId");
+                String userName = rs.getString("userName");
+                String fullName = rs.getString("fullName");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String phone = rs.getString("phone");
+                String address = rs.getString("address");
+                String role = rs.getString("role");
+
+                UserDTO user = new UserDTO(userId, userName, fullName, email, password, phone, address, role);
+                userList.add(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return userList;
+    }
 
 }

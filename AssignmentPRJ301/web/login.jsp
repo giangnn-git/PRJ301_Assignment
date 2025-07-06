@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.UserDTO" %>
+<%@page import="utils.AuthUtils" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,13 +22,13 @@
                 String msg = (objMS == null) ? "" : (objMS + "");
         %>
         <div>
-            <h2>Login</h2>
+            <h2>Login Account</h2>
             <form action="MainController" method="post">
                 <input type="hidden" name="action" value="login"/>
 
                 <div>
-                    <label for="username">User Name:</label>
-                    <input type="text" name="strUserName" id="username" />
+                    <label for="userName">User Name:</label>
+                    <input type="text" name="strUserName" id="userName" />
                 </div>
 
                 <div >
@@ -38,7 +40,7 @@
                     <input type="submit" value="Login"/>
                 </div>
             </form>
-
+            <p>No account? <a href="MainController?action=register">Sign up</a></p> 
             <div><%= msg %></div>
         </div>
         <% } %>

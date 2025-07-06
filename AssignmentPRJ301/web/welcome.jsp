@@ -20,8 +20,12 @@
                 UserDTO user = AuthUtils.getCurrentUser(request);
                 String keyword = (String) request.getAttribute("keyword");
         %>
-        <h1>Welcome <%= user.getName() %>!</h1> <br>
-                <a href="MainController?action=logout" class="logout-link">Log Out</a>
+        <h1>Welcome <%= user.getFullName() %>!</h1> <br>
+        <a href="MainController?action=logout" >Log Out</a>
 
+        <% } else { %>
+            <%= AuthUtils.getAccessDeniedMessage("welcome.jsp") %><br/>
+            (Or <a href="<%= AuthUtils.getLoginURL() %>">Login</a>)
+        <% } %>
     </body>
 </html>
