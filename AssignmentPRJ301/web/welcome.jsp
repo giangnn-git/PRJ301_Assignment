@@ -17,7 +17,6 @@
 
     </head>
     <body>
-<<<<<<< HEAD
         <% 
             if (AuthUtils.isLoggedIn(request)) {
                 UserDTO user = AuthUtils.getCurrentUser(request);
@@ -31,7 +30,6 @@
             <input type="hidden" name="action" value="search"/>
             <input type="text" name="productName"/><br/>
             <input type="submit" value ="search"/>
-=======
         <h1> Menu </h1>
   <%
     Boolean loaded = (Boolean) session.getAttribute("loaded");
@@ -39,7 +37,6 @@
 %>
         <form id="autoForm" action="MainController" method="post">
             <input type="hidden" name="action" value="openCategory"/>
->>>>>>> a2b094a398aa2f2ddeb4578a7ba6341e9dd77071
         </form>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
