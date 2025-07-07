@@ -1,0 +1,90 @@
+[33mcommit c0475ffa829df954c668a47b9bcf661a0a013617[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: hailamlainhe4725 <hailamlainhe4725@gmail.com>
+Date:   Mon Jul 7 09:36:50 2025 +0700
+
+    update: refresh code
+
+[33mcommit b7c5258e467944daa024dccab24216a62c7070ce[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Mon Jul 7 06:58:31 2025 +0700
+
+    fix loi lat vat
+
+[33mcommit 6230f8b5c16aedfe80344bbfba72997b0ec22e56[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Mon Jul 7 06:50:22 2025 +0700
+
+    Rename add -> addProduct + handleAdd -> handleAddProduct
+
+[33mcommit 54d483fceb4d42f1d73901a1f7a24290ebf7b239[m
+Merge: 0c205ec 9799786
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Mon Jul 7 06:41:03 2025 +0700
+
+    Resolved merge conflicts after pull
+
+[33mcommit 97997860b0f9ee30c944c54f31d526ab99aec901[m
+Author: hailamlainhe4725 <hailamlainhe4725@gmail.com>
+Date:   Sun Jul 6 23:33:20 2025 +0700
+
+    Update : them ProductDAO DTO  , them productForm , ProductController
+
+[33mcommit 0c205ecdb6951861f05e6af40715934bddaa35bb[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Sun Jul 6 21:17:21 2025 +0700
+
+    Hoan thanh login
+
+[33mcommit 105a2e2fe26d1c6c3df15cfed28f6775d09476c2[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Sun Jul 6 19:39:27 2025 +0700
+
+    Hoan thanh login(chua co dang ki) + sua lai userDTO
+
+[33mcommit 98d51ff4e72246304bdf8dcba568c9c0990fa392[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Sat Jul 5 20:16:36 2025 +0700
+
+    cap nhat trong MC them dong sout
+
+[33mcommit 748c20b1fa5aa78d56656a2c4fb446ebe7365d41[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Fri Jul 4 12:35:51 2025 +0700
+
+    Update: Them UserDAO + UserController
+
+[33mcommit 7a3b771e846daca7daaa30df60eee4ad97b23d58[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Fri Jul 4 12:32:53 2025 +0700
+
+    Update: welcome.jsp + login.jsp + MainController + AuthUtils + DbUtils
+
+[33mcommit 38aa2194e9a230628fd5ebc3296bf2f51dbc4612[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Fri Jul 4 12:18:39 2025 +0700
+
+    Update: welcome.jsp + login.jsp + MainController + AuthUtils
+
+[33mcommit df4120e9796875759085164013ed7fa2b2492c96[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Fri Jul 4 11:44:59 2025 +0700
+
+    Add them UserDTO
+
+[33mcommit fdc8080a6d33d13ac2d450b37c69a7d33b90dee1[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Fri Jul 4 11:40:29 2025 +0700
+
+    Renamed WebApplication1 to AssignmentPRJ301
+
+[33mcommit 9422569793a65fcad1640e7bf55d8b909f407970[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Fri Jul 4 11:36:51 2025 +0700
+
+    Initial commit
+
+[33mcommit 800ec4569e2a33c0a2bc9e416d97c23dec9ed037[m
+Author: giangnn-git <nngiang252@gmail.com>
+Date:   Fri Jul 4 10:54:10 2025 +0700
+
+    first commit

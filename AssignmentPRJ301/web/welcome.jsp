@@ -15,7 +15,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%
+        <% 
             if (AuthUtils.isLoggedIn(request)) {
                 UserDTO user = AuthUtils.getCurrentUser(request);
                 String keyword = (String) request.getAttribute("keyword");

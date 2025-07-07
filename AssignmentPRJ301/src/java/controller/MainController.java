@@ -30,6 +30,12 @@ public class MainController extends HttpServlet {
     private boolean isProductAction(String action){
         return "search".equals(action);
     }
+    
+    
+    private boolean isCartegoryAction(String action) {
+        return "addCart".equals(action)
+                ;
+    }
  
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,6 +48,8 @@ public class MainController extends HttpServlet {
                 url = "/UserController";
             }else if(isProductAction(action)){
                 url = "/ProductController";
+            }else if(isCartegoryAction(action)){
+                url = "#";
             }
         } catch (Exception e) {
             System.out.println("error in ProcessrRequest: " + e);
