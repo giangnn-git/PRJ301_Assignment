@@ -5,59 +5,45 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.awt.Desktop;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.CategoryDAO;
+import model.CategoryDTO;
 
 /**
  *
- * @author Admin
+ * @author admin
  */
-@WebServlet(name = "MainController", urlPatterns = {"", "/", "/MainController", "/mc"})
-public class MainController extends HttpServlet {
+@WebServlet(name = "CategoryController", urlPatterns = {"/CategoryController"})
+public class CategoryController extends HttpServlet {
 
-    private static final String WELCOME = "welcome.jsp";
-
-    private boolean isUserAction(String action) {
-        return "login".equals(action)
-                || "logout".equals(action)
-                || "register".equals(action);
-    }
-
-    private boolean isProductAction(String action) {
-        return "search".equals(action);
-    }
-    
-    private boolean isCartAction(String action) {
-        return "addCart".equals(action)
-                ;
-    }
-
-    private boolean isCateogryAction(String action) {
-        return "openCategory".equals(action);
-    }
-
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = WELCOME;
+        String url = "";
+        String action = request.getParameter("action");
+        
         try {
-            String action = request.getParameter("action");
-            System.out.println(action +2222);
-            if (isUserAction(action)) {
-                url = "/UserController";
-            } else if (isProductAction(action)) {
-                url = "/ProductController";
-            }else if(isCartAction(action)){
-                url = "#";
-            } else if (isCateogryAction(action)) {
-                url = "/CategoryController";
-            }
+           if("openCategory".equals(action)){
+               url = handleOpenCategory(request,response);
+           } 
         } catch (Exception e) {
-            System.out.println("error in ProcessrRequest: " + e);
+            e.getMessage();
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -101,5 +87,17 @@ public class MainController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String handleOpenCategory(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        CategoryDAO cdao = new CategoryDAO();
+        List<CategoryDTO> list = cdao.getAllCategory();
+        String action = request.getParameter("action");
+        System.out.println(action+123);
+        session.setAttribute("action", action);
+        session.setAttribute("list", list);
+        session.setAttribute("loaded", true);
+        return "welcome.jsp";
+    }
 
 }

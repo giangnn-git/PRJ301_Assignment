@@ -30,7 +30,7 @@
             <div class="message success" style="color: green;"><%= (message != null) ? message: "" %></div>
         <% } %>
 
-        <form action="UserController" method="post">
+        <form action="MainController" method="post">
             <input type="hidden" name="action" value="register" />
             User Name(Account Name): 
             <input type="text" name="userName" value="<%= user != null && user.getUserName() != null ? user.getUserName() : "" %>" /><br/>

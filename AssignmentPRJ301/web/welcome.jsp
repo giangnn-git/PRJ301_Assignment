@@ -5,16 +5,18 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.UserDTO" %>
-<%@page import="utils.AuthUtils" %>
 <%@page import="java.util.List" %>
+<%@page import="model.CategoryDTO" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/welcome.css">
+
     </head>
     <body>
+<<<<<<< HEAD
         <% 
             if (AuthUtils.isLoggedIn(request)) {
                 UserDTO user = AuthUtils.getCurrentUser(request);
@@ -28,10 +30,41 @@
             <input type="hidden" name="action" value="search"/>
             <input type="text" name="productName"/><br/>
             <input type="submit" value ="search"/>
+=======
+        <h1> Menu </h1>
+  <%
+    Boolean loaded = (Boolean) session.getAttribute("loaded");
+    if (loaded == null || !loaded) {
+%>
+        <form id="autoForm" action="MainController" method="post">
+            <input type="hidden" name="action" value="openCategory"/>
+>>>>>>> a2b094a398aa2f2ddeb4578a7ba6341e9dd77071
         </form>
-        <% } else { %>
-            <%= AuthUtils.getAccessDeniedMessage("welcome.jsp") %><br/>
-            (Or <a href="<%= AuthUtils.getLoginURL() %>">Login</a>)
-        <% } %>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById("autoForm").submit();
+            });
+        </script>
+        <%
+            } 
+             List<CategoryDTO> list = (List<CategoryDTO>) session.getAttribute("list");
+            if(list!=null){
+             for(CategoryDTO l : list){
+        %>
+
+        <div>
+            <div>
+                <%=l.getCategoryName()%>
+                <form action="MainController" method="post">
+                    <input type ="hidden" name="action" value="toProduct"/>
+                    <input type="hidden" name="categoryId" value="<%=l.getCategoryId()%>"/>
+                    <input type="submit" value="Xem thuc don"/>
+                </form>
+            </div>
+            <div><img src="<%=l.getImage()%>" alt="Category Image" /></div>
+        </div>
+        <%}
+            }%>
+
     </body>
 </html>

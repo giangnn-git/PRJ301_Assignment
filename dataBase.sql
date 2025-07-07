@@ -78,3 +78,19 @@ VALUES
 (N'Nuoc cam', N'Nuoc ep cam nguyen chat', 12000, N'/images/nuoccam.jpg', 1, 3),
 (N'Mi xao bo', N'Mi xao bo voi rau cai', 25000, N'/images/mixaobo.jpg', 0, 2);
 GO
+
+CREATE TABLE dbo.tblCategory (
+    categoryId INT IDENTITY(1,1) PRIMARY KEY,
+    categoryName NVARCHAR(100) NOT NULL,
+    description NVARCHAR(500),
+	image NVARCHAR(100) NOT NULL
+);
+GO
+
+INSERT INTO dbo.tblCategory(categoryName,description,image)
+values
+('Heo Quay','don thom ngon','/images/heoquay.jpg'),
+('Vit Quay','dam vi','/image/vitquay.jpg'),
+('Do An Kem','do ngan','/image/doankem.jpg'),
+('other','banh mi va banh hoi','/image/other.jpg');
+go
