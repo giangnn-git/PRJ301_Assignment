@@ -52,7 +52,7 @@ public class ProductDAO {
         return list;
     }
     
-    
+
     public static boolean addProduct(ProductDTO p){
         boolean success = false;
         Connection conn = null;
