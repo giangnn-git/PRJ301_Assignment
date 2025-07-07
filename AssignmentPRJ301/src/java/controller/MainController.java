@@ -31,6 +31,11 @@ public class MainController extends HttpServlet {
         return "search".equals(action)||
                 "toProduct".equals(action);
     }
+    
+    private boolean isCartAction(String action) {
+        return "addCart".equals(action)
+                ;
+    }
 
     private boolean isCateogryAction(String action) {
         return "openCategory".equals(action);
@@ -47,6 +52,8 @@ public class MainController extends HttpServlet {
                 url = "/UserController";
             } else if (isProductAction(action)) {
                 url = "/ProductController";
+            }else if(isCartAction(action)){
+                url = "#";
             } else if (isCateogryAction(action)) {
                 url = "/CategoryController";
             }
