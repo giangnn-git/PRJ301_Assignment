@@ -9,7 +9,7 @@
         <h2>Product Form</h2>
 
         <form action="MainController" method="post">
-            <input type="hidden" name="action" value="AddProduct"/>
+            <input type="hidden" name="action" value="addProduct"/>
 
             <div>
                 <label for="productName">Product Name:</label>

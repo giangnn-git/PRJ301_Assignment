@@ -17,22 +17,10 @@
 
     </head>
     <body>
-        <% 
-            if (AuthUtils.isLoggedIn(request)) {
-                UserDTO user = AuthUtils.getCurrentUser(request);
-                String keyword = (String) request.getAttribute("keyword");
-        %>
-        <h1>Welcome <%= user.getFullName() %>!</h1> 
-        <a href="MainController?action=logout" >Log Out</a> <br>
-
-        
-        <form action="MainController" method="action">
-            <input type="hidden" name="action" value="search"/>
-            <input type="text" name="productName"/><br/>
-            <input type="submit" value ="search"/>
         <h1> Menu </h1>
   <%
     Boolean loaded = (Boolean) session.getAttribute("loaded");
+    System.out.println(loaded);
     if (loaded == null || !loaded) {
 %>
         <form id="autoForm" action="MainController" method="post">

@@ -33,7 +33,7 @@ public class ProductController extends HttpServlet {
         try {
             if("search".equals(action)){
                 url = handleSearch(request,response);
-            }else if("add".equals(action)){
+            }else if("addProduct".equals(action)){
                 url = handleAddProduct(request,response);
             }else if("changeStatus".equals(action)){
                 url = handleChangeStatus(request,response);
@@ -112,7 +112,7 @@ private String handleAddProduct(HttpServletRequest request, HttpServletResponse 
     String categoryStr = request.getParameter("categoryId");
     double price = 0;
     boolean available = false;
-    int category = 0;
+    int categoryId = 0;
     ProductDTO p = null;
     ProductDAO pdao = new ProductDAO();
 
@@ -150,13 +150,22 @@ private String handleAddProduct(HttpServletRequest request, HttpServletResponse 
         available = Boolean.parseBoolean(availableStr);
     }
     
-    if(categoryStr != null){
-        category = Integer.parseInt(categoryStr);
+      if (categoryStr == null || categoryStr.trim().isEmpty()) {
+        checkError += "Price is required.<br/>";
+    } else {
+        try {
+            categoryId = Integer.parseInt(categoryStr);
+            if (categoryId <= 0) {
+                checkError += "categoryId cannot be negative.<br/>";
+            }
+        } catch (NumberFormatException e) {
+            checkError += "Invalid categoryId format.<br/>";
+        }
     }
 
     // If no error, create ProductDTO and add to DB
     if (checkError.isEmpty()) {
-        p = new ProductDTO(0, productName, description, price, imageUrl, available, 0);
+        p = new ProductDTO(0, productName, description, price, imageUrl, available, categoryId);
         if (!pdao.addProduct(p)) {
             checkError += "Cannot add product: " + p.getProductName() + "<br/>";
         } else {
