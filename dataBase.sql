@@ -94,3 +94,8 @@ values
 ('Do An Kem','do ngan','/image/doankem.jpg'),
 ('other','banh mi va banh hoi','/image/other.jpg');
 go
+
+ALTER TABLE dbo.tblProducts
+ADD CONSTRAINT FK_tblProducts_Category
+FOREIGN KEY (categoryId)
+REFERENCES dbo.tblCategory(categoryId);

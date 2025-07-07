@@ -37,6 +37,8 @@ public class ProductController extends HttpServlet {
                 url = handleAddProduct(request,response);
             }else if("changeStatus".equals(action)){
                 url = handleChangeStatus(request,response);
+            }else if("toProduct".equals(action)){
+                url = handleToProduct(request,response);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -107,9 +109,10 @@ private String handleAddProduct(HttpServletRequest request, HttpServletResponse 
     String priceStr = request.getParameter("price");
     String imageUrl = request.getParameter("imageUrl");
     String availableStr = request.getParameter("available");
-
+    String categoryStr = request.getParameter("categoryId");
     double price = 0;
     boolean available = false;
+    int category = 0;
     ProductDTO p = null;
     ProductDAO pdao = new ProductDAO();
 
@@ -146,6 +149,10 @@ private String handleAddProduct(HttpServletRequest request, HttpServletResponse 
     if (availableStr != null) {
         available = Boolean.parseBoolean(availableStr);
     }
+    
+    if(categoryStr != null){
+        category = Integer.parseInt(categoryStr);
+    }
 
     // If no error, create ProductDTO and add to DB
     if (checkError.isEmpty()) {
@@ -163,13 +170,22 @@ private String handleAddProduct(HttpServletRequest request, HttpServletResponse 
     return "productForm.jsp";
     }
 
-
+    
 
     private String handleChangeStatus(HttpServletRequest request, HttpServletResponse response) {
 //        int productId = Integer.parseInt(request.getParameter("productId"));
 //        boolean available = Boolean.parseBoolean(request.getParameter("available"));
 //        if(pdao.u)
         return "";
+    }
+
+    private String handleToProduct(HttpServletRequest request, HttpServletResponse response) {
+        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+        ProductDAO pdao = new  ProductDAO();
+        List<ProductDTO> list = pdao.getProductByCategoryId(categoryId);
+        HttpSession session = request.getSession();
+        session.setAttribute("list", list);
+        return "menu.jsp";
     }
 
     

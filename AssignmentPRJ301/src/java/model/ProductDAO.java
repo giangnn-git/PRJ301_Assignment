@@ -60,13 +60,14 @@ public class ProductDAO {
         ResultSet rs = null;
         try {
             conn = DbUtils.getConnection();
-            ps = conn.prepareStatement("INSERT INTO tblProducts (productName, description, price, imageUrl, available, categoryId) VALUE (?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            ps = conn.prepareStatement("INSERT INTO tblProducts (productName, description, price, imageUrl, available, categoryId) SELECT ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM tblCategories WHERE categoryId = ?",Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, p.getProductName());
             ps.setString(2, p.getDescription());
             ps.setDouble(3, p.getPrice());
             ps.setString(4, p.getImageUrl());
             ps.setBoolean(5, p.getAvailable());
             ps.setInt(6, p.getCategoryId());
+            ps.setInt(7, p.getCategoryId());
             
              int count = ps.executeUpdate();
              rs = ps.getGeneratedKeys();
@@ -93,5 +94,35 @@ public class ProductDAO {
         if(conn!=null){
             conn = null;
         }
+    }
+
+    public List<ProductDTO> getProductByCategoryId(int categoryId) {
+        List<ProductDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ProductDTO p = null;
+        try {
+            conn = DbUtils.getConnection();
+            ps = conn.prepareStatement("SELECT productId,productName,description,price,imageUrl,available FROM tblProducts WHERE categoryId = ?");
+            ps.setInt(1, categoryId);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                int productId = rs.getInt("productId");
+                String productName = rs.getString("productName");
+                String description = rs.getString("description");
+                double price = rs.getDouble("price");
+                String imageUrl = rs.getString("imageUrl");
+                boolean available = rs.getBoolean("available");
+                p = new ProductDTO(productId, productName, description, price, imageUrl, available, categoryId);
+                list.add(p);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            closeResource(conn, ps, rs);
+        }
+        return list;
     }
 }

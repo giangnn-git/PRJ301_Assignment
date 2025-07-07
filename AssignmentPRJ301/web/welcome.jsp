@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List" %>
 <%@page import="model.CategoryDTO" %>
+<%@page import="utils.AuthUtils" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -49,6 +50,10 @@
         </div>
         <%}
             }%>
-
+            <%
+            if(AuthUtils.isAdmin(request)){
+            %>
+            <a href="productForm.jsp">to add new food</a>
+            <%}%>
     </body>
 </html>
