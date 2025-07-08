@@ -6,6 +6,7 @@
         <title>Product Form</title>
     </head>
     <body>
+        <a href="MainController?action=logout"">Log Out</a>
         <h2>Product Form</h2>
 
         <form action="MainController" method="post">

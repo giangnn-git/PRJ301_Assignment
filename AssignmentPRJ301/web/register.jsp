@@ -32,7 +32,7 @@
 
         <form action="MainController" method="post">
             <input type="hidden" name="action" value="register" />
-            User Name(Account Name): 
+            User Name: 
             <input type="text" name="userName" value="<%= user != null && user.getUserName() != null ? user.getUserName() : "" %>" /><br/>
             
             Full Name: 

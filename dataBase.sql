@@ -10,31 +10,6 @@ USE [PRJ301_ASSIGNMENT]
 GO
 
 
-/*
--- 1. Users Table: tblUsers
-CREATE TABLE [dbo].[tblUsers](
-	[username] [nvarchar](50) NOT NULL,
-	[name] [nvarchar](100) NOT NULL,
-	[password] [nvarchar](255) NOT NULL,
-	[role] [nvarchar](20) NOT NULL,
- CONSTRAINT [PK_tblUsers] PRIMARY KEY CLUSTERED 
-(
-	[username] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-
--- Insert sample users
-INSERT [dbo].[tblUsers] ([username], [name], [password], [role]) VALUES (N'admin', N'Administrator', N'1', N'AD')
-INSERT [dbo].[tblUsers] ([username], [name], [password], [role]) VALUES (N'mem1', N'Toi la Bot', N'1', N'MB')
-INSERT [dbo].[tblUsers] ([username], [name], [password], [role]) VALUES (N'member2', N'Nguyen Van A', N'pass123', N'AD')
-INSERT [dbo].[tblUsers] ([username], [name], [password], [role]) VALUES (N'member3', N'Tran Thi B', N'student123', N'MB')
-INSERT [dbo].[tblUsers] ([username], [name], [password], [role]) VALUES (N'member4', N'Le Van C', N'student456', N'MB')
-INSERT [dbo].[tblUsers] ([username], [name], [password], [role]) VALUES (N'member5', N'Pham Thi D', N'student789', N'MB')
-GO
-
-*/
 
 IF OBJECT_ID('dbo.tblUsers', 'U') IS NOT NULL
     DROP TABLE dbo.tblUsers;
@@ -120,3 +95,20 @@ INSERT INTO [dbo].[tblProducts]
 ('Banh Mi Heo Quay', 'thom va gion (1 o)', 20000, '/image/banhmiheoquay.jpg', 1, 4),
 ('Banh Hoi Heo Quay', '(1 hop)', 25000, '/image/banhhoiheoquay.jpg', 1, 4);
 GO
+
+
+CREATE TABLE tblCarts (
+    cartId INT IDENTITY(1,1) PRIMARY KEY,
+    userId INT NOT NULL,
+    createdAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (userId) REFERENCES tblUsers(userId)
+);
+
+CREATE TABLE tblCartItems (
+    cartItemId INT IDENTITY(1,1) PRIMARY KEY,
+    cartId INT NOT NULL,
+    productId INT NOT NULL,
+    quantity INT NOT NULL,
+    FOREIGN KEY (cartId) REFERENCES tblCarts(cartId),
+    FOREIGN KEY (productId) REFERENCES tblProducts(productId)
+);

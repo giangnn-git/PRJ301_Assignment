@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.CartDAO;
+import model.CartDTO;
 import model.UserDAO;
 import model.UserDTO;
 
@@ -98,6 +100,13 @@ public class UserController extends HttpServlet {
             url = "welcome.jsp";
             UserDTO user = userDAO.getUserByUserName(userName);
             session.setAttribute("user", user);
+            //Load lại Cart từ DB
+            CartDAO cartDAO = new CartDAO();
+            int cartId = cartDAO.getOrCreateCartId(user.getUserId());
+            CartDTO cart = new CartDTO(cartId, user.getUserId());
+            cart.setItems(cartDAO.getCartItems(cartId));
+            session.setAttribute("cart", cart);
+        
         } else {
             // Dang nhap that bai
             url = "login.jsp";
@@ -182,7 +191,6 @@ public class UserController extends HttpServlet {
         }
     }
 
-    // Nếu có lỗi hoặc không thành công
     request.setAttribute("checkError", checkError);
     request.setAttribute("user", user);  
 

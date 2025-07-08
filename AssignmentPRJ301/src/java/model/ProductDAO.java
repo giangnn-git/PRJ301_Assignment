@@ -18,6 +18,8 @@ import utils.DbUtils;
  */
 public class ProductDAO {
     
+    private static final String GET_PRODUCT_BY_ID = "SELECT productId, productName, description, price, imageUrl, available, categoryId FROM tblProducts WHERE productId = ?";
+    
     public static boolean isExist(String productName){
         return getProductByName(productName)!=null?true:false;
     }
@@ -125,4 +127,36 @@ public class ProductDAO {
         }
         return list;
     }
+
+    public ProductDTO getProductById(int productId) {
+        ProductDTO p = null;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DbUtils.getConnection();
+            ps = conn.prepareStatement(GET_PRODUCT_BY_ID);
+            ps.setInt(1, productId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String productName = rs.getString("productName");
+                String description = rs.getString("description");
+                double price = rs.getDouble("price");
+                String imageUrl = rs.getString("imageUrl");
+                boolean available = rs.getBoolean("available");
+                int categoryId = rs.getInt("categoryId");
+
+                p = new ProductDTO(productId, productName, description, price, imageUrl, available, categoryId);
+            }
+        } catch (Exception e) {
+            System.out.println("Error in getProductById: " + e.getMessage());
+        } finally {
+            closeResource(conn, ps, rs);
+        }
+
+        return p;
+    }
+
 }

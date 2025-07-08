@@ -91,11 +91,10 @@ public class CategoryController extends HttpServlet {
     private String handleOpenCategory(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         CategoryDAO cdao = new CategoryDAO();
-        List<CategoryDTO> list = cdao.getAllCategory();
+        List<CategoryDTO> categoryList = cdao.getAllCategory();
         String action = request.getParameter("action");
-        System.out.println(action+123);
         session.setAttribute("action", action);
-        session.setAttribute("list", list);
+        session.setAttribute("categoryList", categoryList);
         session.setAttribute("loaded", true);
         return "welcome.jsp";
     }

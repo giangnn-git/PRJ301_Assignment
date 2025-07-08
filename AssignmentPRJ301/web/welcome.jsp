@@ -18,6 +18,7 @@
     </head>
     <body>
         <h1> Menu </h1>
+        <a href="MainController?action=logout"">Log Out</a> <br>
   <%
     Boolean loaded = (Boolean) session.getAttribute("loaded");
     System.out.println(loaded);
@@ -33,7 +34,7 @@
         </script>
         <%
             } 
-             List<CategoryDTO> list = (List<CategoryDTO>) session.getAttribute("list");
+             List<CategoryDTO> list = (List<CategoryDTO>) session.getAttribute("categoryList");
             if(list!=null){
              for(CategoryDTO l : list){
         %>
@@ -54,7 +55,7 @@
             <%
             if(AuthUtils.isAdmin(request)){
             %>
-            <a href="productForm.jsp">to add new food</a>
+            <a href="productForm.jsp">Add new food</a>
             <%}%>
     </body>
 </html>

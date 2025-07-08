@@ -48,13 +48,12 @@ public class MainController extends HttpServlet {
         String url = WELCOME;
         try {
             String action = request.getParameter("action");
-            System.out.println(action +2222);
             if (isUserAction(action)) {
                 url = "/UserController";
             } else if (isProductAction(action)) {
                 url = "/ProductController";
             }else if(isCartAction(action)){
-                url = "#";
+                url = "CartController";
             } else if (isCateogryAction(action)) {
                 url = "/CategoryController";
             }

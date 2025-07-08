@@ -12,7 +12,7 @@ public class CartItemDTO {
     private int productId;
     private String productName;
     private Double unitPrice;
-    private int quantity;
+    private int quantity;   
 
     public CartItemDTO() {
     }

@@ -41,7 +41,7 @@
                 </div>
             </form>
             <p>No account? <a href="MainController?action=register">Sign up</a></p> 
-            <div><%= msg %></div>
+            <div style="color: red"><%= msg %></div>
         </div>
         <% } %>
     </body>
