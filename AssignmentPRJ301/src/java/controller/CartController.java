@@ -25,8 +25,8 @@ import utils.AuthUtils;
  */
 @WebServlet(name = "CartController", urlPatterns = {"/CartController"})
 public class CartController extends HttpServlet {
-    
-    CartDAO dao = new CartDAO();
+
+    CartDAO cartDAO = new CartDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,6 +45,10 @@ public class CartController extends HttpServlet {
             String action = request.getParameter("action");
             if ("addCart".equals(action)) {
                 url = handleAddCart(request, response);
+            } else if ("updateQuantity".equals(action)) {
+                url = handleUpdateCartQuantity(request, response);
+            } else if ("updateNote".equals(action)) {
+                url = handleUpdateNote(request, response);
             }
         } catch (Exception e) {
             e.getMessage();
@@ -93,71 +97,137 @@ public class CartController extends HttpServlet {
     }// </editor-fold>
 
     private String handleAddCart(HttpServletRequest request, HttpServletResponse response) {
+        String checkError = "";
+        String message = "";
         if (!AuthUtils.isLoggedIn(request)) {
             request.setAttribute("message", "Please log in to use the cart.");
-            return "login.jsp";  
+            return "login.jsp";
         }
-
-
-    try {
         UserDTO user = AuthUtils.getCurrentUser(request);
 
-        // ====== productId ======
+        String productIdRaw = request.getParameter("productId");
+        String quantityRaw = request.getParameter("quantity");
+        String note = request.getParameter("note");
+
         int productId = -1;
-        try {
-            productId = Integer.parseInt(request.getParameter("productId"));
-            if (productId <= 0) {
-                request.setAttribute("errorMessage", "Invalid product selected.");
-                return "menu.jsp";
-            }
-        } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Invalid product ID.");
-            return "menu.jsp";
-        }
-
-        // ====== quantity ======
         int quantity = 1;
+        // ===== productId =====
+        if (productIdRaw == null || productIdRaw.trim().isEmpty()) {
+            checkError += "Product ID is missing.<br/>";
+        } else {
+            try {
+                productId = Integer.parseInt(productIdRaw);
+                if (productId <= 0) {
+                    checkError += "Invalid product selected.<br/>";
+                }
+            } catch (NumberFormatException e) {
+                checkError += "Product ID must be a valid number.<br/>";
+            }
+        }
+        // ===== quantity =====
+        if (quantityRaw != null && !quantityRaw.trim().isEmpty()) {
+            try {
+                quantity = Integer.parseInt(quantityRaw);
+                if (quantity < 1 || quantity > 10) {
+                    checkError += "Quantity must be between 1 and 10.<br/>";
+                }
+            } catch (NumberFormatException e) {
+                checkError += "Quantity must be a valid number.<br/>";
+            }
+        }
+        if (!checkError.isEmpty()) {
+            request.setAttribute("checkError", checkError);
+            return "menu.jsp";
+        }
+        // ===== add to cart =====
         try {
-            quantity = Integer.parseInt(request.getParameter("quantity"));
-            if (quantity < 1 || quantity > 10) {
-                request.setAttribute("errorMessage", "Quantity must be between 1 and 20.");
+            ProductDAO pdao = new ProductDAO();
+            ProductDTO product = pdao.getProductById(productId);
+
+            if (product == null) {
+                request.setAttribute("errorMessage", "Product not found.");
                 return "menu.jsp";
             }
-        } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Invalid quantity.");
+            
+            int cartId = cartDAO.getOrCreateCartId(user.getUserId());
+
+            CartItemDTO item = new CartItemDTO(productId, product.getProductName(), product.getPrice(), quantity, note);
+            cartDAO.addOrUpdateItem(cartId, item);
+
+            // Cập nhật lại giỏ hàng trong session
+            CartDTO cart = new CartDTO(cartId, user.getUserId());
+            cart.setItems(cartDAO.getCartItems(cartId));
+            request.getSession().setAttribute("cart", cart);
+
+            message = "Added to cart successfully!";
+            request.setAttribute("message", message);
+            return "menu.jsp";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            checkError += "Unexpected error occurred while adding to cart.<br/>";
+            request.setAttribute("checkError", checkError);
             return "menu.jsp";
         }
-
-        
-        ProductDAO pdao = new ProductDAO();
-        ProductDTO product = pdao.getProductById(productId);
-
-        if (product == null) {
-            request.setAttribute("errorMessage", "Product not found.");
-            return "menu.jsp";
-        }
-
-        // ====== Build and add item ======
-        CartDAO cartDAO = new CartDAO();
-        int cartId = cartDAO.getOrCreateCartId(user.getUserId());
-        CartItemDTO item = new CartItemDTO(productId, product.getProductName(), product.getPrice(), quantity);
-        cartDAO.addOrUpdateItem(cartId, item);
-
-        // Update cart in session
-        CartDTO cart = new CartDTO(cartId, user.getUserId());
-        cart.setItems(cartDAO.getCartItems(cartId));
-        request.getSession().setAttribute("cart", cart);
-
-        request.setAttribute("message", "Added to cart successfully!");
-        return "menu.jsp"; // 
-        
-    } catch (Exception e) {
-        e.printStackTrace();
-        request.setAttribute("errorMessage", "Unexpected error occurred.");
-        return "menu.jsp";
     }
-}
 
+    private String handleUpdateCartQuantity(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isLoggedIn(request)) {
+            request.setAttribute("message", "Please log in to use the cart.");
+            return "login.jsp";
+        }
+
+        try {
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            int change = Integer.parseInt(request.getParameter("change"));
+
+            UserDTO user = AuthUtils.getCurrentUser(request);
+
+            int cartId = cartDAO.getOrCreateCartId(user.getUserId());
+
+            cartDAO.updateItemQuantity(cartId, productId, change);
+
+            // Cập nhật lại cart trong session
+            CartDTO cart = new CartDTO(cartId, user.getUserId());
+            cart.setItems(cartDAO.getCartItems(cartId));
+            request.getSession().setAttribute("cart", cart);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("checkError", "Failed to update quantity.");
+        }
+
+        return "cart.jsp";
+    }
+
+    private String handleUpdateNote(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isLoggedIn(request)) {
+            request.setAttribute("checkError", "Please log in to use this function.");
+            return "login.jsp";
+        }
+
+        try {
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            String note = request.getParameter("note");
+            UserDTO user = AuthUtils.getCurrentUser(request);
+
+            int cartId = cartDAO.getOrCreateCartId(user.getUserId());
+
+            cartDAO.updateNote(cartId, productId, note);
+
+            // Cập nhật lại giỏ trong session
+            CartDTO cart = new CartDTO(cartId, user.getUserId());
+            cart.setItems(cartDAO.getCartItems(cartId));
+            request.getSession().setAttribute("cart", cart);
+
+            request.setAttribute("message", "Note updated.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("checkError", "Failed to update note.");
+        }
+
+        return "cart.jsp";
+    }
 
 
 }

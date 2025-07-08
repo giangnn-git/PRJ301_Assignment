@@ -47,9 +47,11 @@
                 <img src="<%= p.getImageUrl() %>" width="200" height="150" alt="product image">
                 <h3><%= p.getProductName() %></h3>
                 <p><%= p.getDescription() %></p>
-                <p>Price: <%= p.getPrice() %> VND</p>
+                <p>Price: <%= p.getPrice() %> VND</p> 
+                Note: <input type="text" name="note" placeholder="...">  <br> <br>
                 Quantity:
-                <input type="number" name="quantity" value="1" min="1" max="10">
+                <input type="number" name="quantity" value="1" min="1" max="10"> 
+                
                 <br><br>
                 <input type="submit" value="Add to Cart">
             </div>

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : cart
-    Created on : Jul 8, 2025, 3:55:41 PM
-    Author     : Admin
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.CartDTO"%>
 <%@page import="model.CartItemDTO"%>
@@ -20,10 +14,23 @@
 
         <%
             if (AuthUtils.isLoggedIn(request)) {
-                CartDTO cart = (CartDTO) session.getAttribute("cart");
+        CartDTO cart = (CartDTO) session.getAttribute("cart");
+        String error = (String) request.getAttribute("checkError");
+        String message = (String) request.getAttribute("message");
         %>
 
         <h2>Your Cart</h2>
+        <% if (error != null && !error.isEmpty()) { %>
+        <div style="color: red; font-weight: bold; margin-bottom: 10px;">
+            <%= error %>
+        </div>
+        <% } %>
+
+        <% if (message != null && !message.trim().isEmpty()) { %>
+        <div style="color: green; font-weight: bold; margin-bottom: 10px;">
+            <%= message %>
+        </div>
+        <% } %>
 
         <%
             if (cart == null || cart.getItems().isEmpty()) {
@@ -38,6 +45,7 @@
                 <th>Unit Price</th>
                 <th>Quantity</th>
                 <th>Total</th>
+                <th>Note</th>
             </tr>
 
             <%
@@ -46,8 +54,32 @@
             <tr>
                 <td><%= item.getProductName() %></td>
                 <td><%= item.getUnitPrice() %></td>
-                <td><%= item.getQuantity() %></td>
+                <td>
+                    <form action="MainController" method="post" style="display:inline;">
+                        <input type="hidden" name="action" value="updateQuantity"/>
+                        <input type="hidden" name="productId" value="<%= item.getProductId() %>"/>
+                        <input type="hidden" name="change" value="-1"/>
+                        <input type="submit" value="−"/>
+                    </form>
+
+                    <%= item.getQuantity() %>
+
+                    <form action="MainController" method="post" style="display:inline;">
+                        <input type="hidden" name="action" value="updateQuantity"/>
+                        <input type="hidden" name="productId" value="<%= item.getProductId() %>"/>
+                        <input type="hidden" name="change" value="1"/>
+                        <input type="submit" value="+"/>
+                    </form>
+                </td>
                 <td><%= item.getTotalPrice() %></td>
+                <td>
+                    <form action="MainController" method="post">
+                        <input type="hidden" name="action" value="updateNote"/>
+                        <input type="hidden" name="productId" value="<%= item.getProductId() %>"/>
+                        <input type="text" name="note" value="<%= item.getNote() == null ? "" : item.getNote() %>" size="15"/>
+                        <input type="submit" value="Save"/>
+                    </form>
+                </td>
             </tr>
             <%
                 }
@@ -55,9 +87,10 @@
 
             <tr>
                 <td colspan="3" align="right"><strong>Total Amount:</strong></td>
-                <td><strong><%= cart.getTotalAmount() %> VND</strong></td>
+                <td colspan="2"><strong><%= cart.getTotalAmount() %> VND</strong></td>
             </tr>
         </table>
+
         <%
             }
         %>
@@ -78,5 +111,3 @@
 
     </body>
 </html>
-
-

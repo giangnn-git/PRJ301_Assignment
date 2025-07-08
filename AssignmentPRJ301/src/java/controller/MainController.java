@@ -16,7 +16,7 @@ import java.awt.Desktop;
  *
  * @author Admin
  */
-@WebServlet(name = "MainController", urlPatterns = {"/MainController", "/mc"})
+@WebServlet(name = "MainController", urlPatterns = {"","/MainController", "/mc"})
 public class MainController extends HttpServlet {
 
     private static final String WELCOME = "welcome.jsp";
@@ -35,6 +35,8 @@ public class MainController extends HttpServlet {
     
     private boolean isCartAction(String action) {
         return "addCart".equals(action)
+                || "updateQuantity".equals(action)
+                || "updateNote".equals(action)
                 ;
     }
 
@@ -53,7 +55,7 @@ public class MainController extends HttpServlet {
             } else if (isProductAction(action)) {
                 url = "/ProductController";
             }else if(isCartAction(action)){
-                url = "CartController";
+                url = "/CartController";
             } else if (isCateogryAction(action)) {
                 url = "/CategoryController";
             }
