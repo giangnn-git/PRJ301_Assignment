@@ -41,6 +41,11 @@ public class MainController extends HttpServlet {
     private boolean isCateogryAction(String action) {
         return "openCategory".equals(action);
     }
+    
+    private boolean isInventoryAction(String action){
+        return "store".equals(action)||
+                "nhapHang".equals(action);
+    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,6 +61,8 @@ public class MainController extends HttpServlet {
                 url = "CartController";
             } else if (isCateogryAction(action)) {
                 url = "/CategoryController";
+            } else if(isInventoryAction(action)){
+                url = "/InventoryController";
             }
         } catch (Exception e) {
             System.out.println("error in ProcessrRequest: " + e);

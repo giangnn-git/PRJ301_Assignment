@@ -56,6 +56,10 @@
             if(AuthUtils.isAdmin(request)){
             %>
             <a href="productForm.jsp">Add new food</a>
+            <form action="MainController" method="post">
+                <input type="hidden" name="action" value="store"/>
+                <input type="submit" value ="xemKho"/>
+            </form>
             <%}%>
     </body>
 </html>
