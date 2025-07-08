@@ -99,3 +99,24 @@ ALTER TABLE dbo.tblProducts
 ADD CONSTRAINT FK_tblProducts_Category
 FOREIGN KEY (categoryId)
 REFERENCES dbo.tblCategory(categoryId);
+
+
+INSERT INTO [dbo].[tblProducts]
+           ([productName]
+           ,[description]
+           ,[price]
+           ,[imageUrl]
+           ,[available]
+           ,[categoryId])
+     VALUES
+('Ba Roi', 'co nac va mo (100g)', 38000, '/image/baroi.jpg', 1, 1),
+('Dui', 'nhieu nac (100g)', 38000, '/image/dui.jpg', 1, 1),
+('Vit Quay Bac Kinh', 'ngot va beo (1 con)', 300000, '/image/vitbackinh.jpg', 1, 2),
+('Vit Quay Da Gion Tu Vi', 'gion ngon thom(1 con)', 340000, '/image/vitdagion.jpg', 1, 2),
+('Banh Mi', 'dac ruot', 5000, '/image/banhmi.jpg', 1, 3),
+('Banh Hoi', 'cuon tron (1kg)', 20000, '/image/banhhoi.jpg', 1, 3),
+('Banh Bao Chien', 'sieu ngon (3 cai)', 10000, '/image/banhbaochien.jpg', 1, 3),
+('Du Chua', 'chua nhe 250g', 10000, '/image/duachua.jpg', 1, 3),
+('Banh Mi Heo Quay', 'thom va gion (1 o)', 20000, '/image/banhmiheoquay.jpg', 1, 4),
+('Banh Hoi Heo Quay', '(1 hop)', 25000, '/image/banhhoiheoquay.jpg', 1, 4);
+GO
