@@ -14,6 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+         <%@include file="header.jsp" %>
         <form action="MainController" method="post">
             <input type="hidden" name="action" value="nhapHang"/>
                 <table>
@@ -63,5 +64,6 @@
 <%
     }
 %>
+<%@include file="footer.jsp" %>
     </body>
 </html>

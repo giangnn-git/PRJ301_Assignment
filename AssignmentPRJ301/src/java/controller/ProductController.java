@@ -31,7 +31,7 @@ public class ProductController extends HttpServlet {
         String action = request.getParameter("action");
         String url = "";
         try {
-            if("search".equals(action)){
+            if("searchName".equals(action)){
                 url = handleSearch(request,response);
             }else if("addProduct".equals(action)){
                 url = handleAddProduct(request,response);
@@ -95,9 +95,10 @@ public class ProductController extends HttpServlet {
             list = pdao.getProductByName(productName);
         }
         request.setAttribute("productName", productName);
+        System.out.println(list);
         HttpSession session = request.getSession();
         session.setAttribute("list", list);
-        return "Menu.jsp";
+        return "menu.jsp";
     }
 
 private String handleAddProduct(HttpServletRequest request, HttpServletResponse response) {

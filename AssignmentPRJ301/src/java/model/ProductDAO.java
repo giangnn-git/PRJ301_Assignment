@@ -32,7 +32,8 @@ public class ProductDAO {
         ResultSet rs = null;
         try {
             conn = DbUtils.getConnection();
-            ps = conn.prepareStatement("");
+            ps = conn.prepareStatement("SELECT productId,description , price,imageUrl,available,categoryId FROM tblProducts WHERE productName LIKE ?");
+            ps.setString(1, "%"+productName +"%");
             rs = ps.executeQuery();
             
             while(rs.next()){

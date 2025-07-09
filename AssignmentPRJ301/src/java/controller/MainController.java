@@ -28,7 +28,7 @@ public class MainController extends HttpServlet {
     }
 
     private boolean isProductAction(String action) {
-        return "search".equals(action)||
+        return "searchName".equals(action)||
                 "toProduct".equals(action)||
                 "addProduct".equals(action);
     }
