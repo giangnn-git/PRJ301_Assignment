@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.CartDAO;
 import model.CartDTO;
 import model.CartItemDTO;
+import model.OrderDAO;
 import model.ProductDAO;
 import model.ProductDTO;
 import model.UserDTO;
@@ -49,6 +50,8 @@ public class CartController extends HttpServlet {
                 url = handleUpdateCartQuantity(request, response);
             } else if ("updateNote".equals(action)) {
                 url = handleUpdateNote(request, response);
+            } else if ("checkout".equals(action)) {
+                url = handleCheckout(request, response);
             }
         } catch (Exception e) {
             e.getMessage();
@@ -228,6 +231,42 @@ public class CartController extends HttpServlet {
 
         return "cart.jsp";
     }
+
+    private String handleCheckout(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isLoggedIn(request)) {
+        request.setAttribute("checkError", "Please log in to checkout.");
+        return "login.jsp";
+    }
+
+    try {
+        UserDTO user = AuthUtils.getCurrentUser(request);
+        CartDTO cart = (CartDTO) request.getSession().getAttribute("cart");
+        
+        if (cart == null || cart.getItems().isEmpty()) {
+            return "cart.jsp";
+        }
+
+        String shippingAddress = request.getParameter("shippingAddress");
+        double totalAmount = cart.getTotalAmount();
+
+        //   Tạo đơn hàng
+        OrderDAO orderDAO = new OrderDAO();
+        int orderId = orderDAO.createOrder(user.getUserId(), cart.getItems(), totalAmount, shippingAddress);
+
+        //   Xoá giỏ hàng
+        cartDAO.clearCart(cart.getCartId());
+        request.getSession().removeAttribute("cart");
+        request.setAttribute("message", "Order placed successfully. Order ID: #" + orderId);
+        return "cart.jsp"; 
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        request.setAttribute("checkError", "Checkout failed. Please try again.");
+        return "cart.jsp";
+    }
+}
+
+
 
 
 }

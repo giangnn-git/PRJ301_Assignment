@@ -77,4 +77,24 @@ public class InventoryDAO {
         }
      return success;
     }
+
+    public boolean decreaseQuantity(int productId, int quantity) {
+    String sql = "UPDATE tblInventory SET quantityAvailable = quantityAvailable - ? " +
+                 "WHERE productId = ? AND quantityAvailable >= ?";
+    try {
+        Connection conn = DbUtils.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+    
+        ps.setInt(1, quantity);
+        ps.setInt(2, productId);
+        ps.setInt(3, quantity);
+
+        int rows = ps.executeUpdate();
+        return rows > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 }

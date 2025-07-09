@@ -106,7 +106,7 @@ CREATE TABLE tblCartItems (
     FOREIGN KEY (productId) REFERENCES tblProducts(productId)
 );
 CREATE TABLE tblInventory (
-inventoryId INT IDENTITY(1,1) PRIMARY KEY,
+	tuTang INT IDENTITY(1,1) PRIMARY KEY,
     inventoryId INT NOT NULL,
     productId INT NOT NULL,
     quantityAvailable INT NOT NULL,
@@ -118,12 +118,12 @@ inventoryId INT IDENTITY(1,1) PRIMARY KEY,
 INSERT INTO tblInventory (inventoryId, productId, quantityAvailable)
 VALUES
 (1, 5, 2),
-(2, 6, 9),
-(3, 7, 7),
-(4, 8, 15),
-(5, 9, 1),
-(6, 10, 3),
-(7, 11, 4),
-(8, 12, 6),
-(9, 13, 1),
-(10, 14, 2);
+(1, 6, 9),
+(1, 7, 7),
+(1, 8, 15),
+(1, 9, 1),
+(1, 10, 3),
+(1, 11, 4),
+(1, 12, 6),
+(1, 13, 1),
+(1, 14, 2);
