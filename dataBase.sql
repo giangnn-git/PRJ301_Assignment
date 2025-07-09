@@ -46,13 +46,6 @@ CREATE TABLE dbo.tblProducts (
 );
 GO
 
-INSERT INTO dbo.tblProducts (productName, description, price, imageUrl, available, categoryId)
-VALUES
-(N'Banh mi thit', N'Banh mi kep thit heo, rau, dua leo', 15000, N'/images/banhmi.jpg', 1, 1),
-(N'Com ga', N'Com trang voi ga chien gion', 30000, N'/images/comga.jpg', 1, 2),
-(N'Nuoc cam', N'Nuoc ep cam nguyen chat', 12000, N'/images/nuoccam.jpg', 1, 3),
-(N'Mi xao bo', N'Mi xao bo voi rau cai', 25000, N'/images/mixaobo.jpg', 0, 2);
-GO
 
 CREATE TABLE dbo.tblCategory (
     categoryId INT IDENTITY(1,1) PRIMARY KEY,
@@ -112,3 +105,25 @@ CREATE TABLE tblCartItems (
     FOREIGN KEY (cartId) REFERENCES tblCarts(cartId),
     FOREIGN KEY (productId) REFERENCES tblProducts(productId)
 );
+CREATE TABLE tblInventory (
+inventoryId INT IDENTITY(1,1) PRIMARY KEY,
+    inventoryId INT NOT NULL,
+    productId INT NOT NULL,
+    quantityAvailable INT NOT NULL,
+
+    FOREIGN KEY (productId) REFERENCES tblProducts(productId)
+);
+
+
+INSERT INTO tblInventory (inventoryId, productId, quantityAvailable)
+VALUES
+(1, 5, 2),
+(2, 6, 9),
+(3, 7, 7),
+(4, 8, 15),
+(5, 9, 1),
+(6, 10, 3),
+(7, 11, 4),
+(8, 12, 6),
+(9, 13, 1),
+(10, 14, 2);
