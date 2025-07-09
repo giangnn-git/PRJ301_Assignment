@@ -5,78 +5,37 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.awt.Desktop;
+import java.util.List;
+import model.OrderDAO;
+import model.OrderDTO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "MainController", urlPatterns = {"","/MainController", "/mc"})
-public class MainController extends HttpServlet {
+@WebServlet(name = "OrderController", urlPatterns = {"/OrderController"})
+public class OrderController extends HttpServlet {
 
-    private static final String WELCOME = "welcome.jsp";
-
-    private boolean isUserAction(String action) {
-        return "login".equals(action)
-                || "logout".equals(action)
-                || "register".equals(action);
-    }
-
-    private boolean isProductAction(String action) {
-        return "search".equals(action)||
-                "toProduct".equals(action)||
-                "addProduct".equals(action);
-    }
-    
-    private boolean isCartAction(String action) {
-        return "addCart".equals(action)
-                || "updateQuantity".equals(action)
-                || "updateNote".equals(action)
-                || "checkout".equals(action)
-                ;
-    }
-
-    private boolean isCateogryAction(String action) {
-        return "openCategory".equals(action);
-    }
-    
-    private boolean isInventoryAction(String action){
-        return "store".equals(action)
-                || "nhapHang".equals(action)
-                ;
-    }
-    
-    private boolean isOrderAction(String action) {
-        return "updateOrderStatus".equals(action)
-                || "viewOrders".equals(action);
-    }
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+     
+     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = WELCOME;
+         String url = "orders.jsp";
         try {
             String action = request.getParameter("action");
-            if (isUserAction(action)) {
-                url = "/UserController";
-            } else if (isProductAction(action)) {
-                url = "/ProductController";
-            }else if(isCartAction(action)){
-                url = "/CartController";
-            } else if (isCateogryAction(action)) {
-                url = "/CategoryController";
-            } else if(isInventoryAction(action)){
-                url = "/InventoryController";
-            }else if(isOrderAction(action)){
-                url = "/OrderController";
+            if ("updateOrderStatus".equals(action)) {
+                url = handleUpdateOrderStatus(request, response);
+            } else if ("viewOrders".equals(action)) {
+                List<OrderDTO> orders = new OrderDAO().getAllOrders();
+                request.setAttribute("orders", orders);
             }
         } catch (Exception e) {
-            System.out.println("error in ProcessrRequest: " + e);
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -120,5 +79,32 @@ public class MainController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String handleUpdateOrderStatus(HttpServletRequest request, HttpServletResponse response) {
+    try {
+        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        String newStatus = request.getParameter("newStatus");
+
+        OrderDAO dao = new OrderDAO();
+        boolean updated = dao.updateOrderStatus(orderId, newStatus);
+
+        if (updated) {
+            request.setAttribute("message", "Order status updated successfully.");
+        } else {
+            request.setAttribute("checkError", "Failed to update order status.");
+        }
+
+        List<OrderDTO> orders = dao.getAllOrders();
+        request.setAttribute("orders", orders);
+
+    } catch (Exception e) {
+        request.setAttribute("checkError", "Error: " + e.getMessage());
+    }
+
+    return "orders.jsp";   
+}
+
+
+
 
 }

@@ -19,6 +19,8 @@
     <body>
         <h1> Menu </h1>
         <a href="MainController?action=logout"">Log Out</a> <br>
+        <a href="MainController?action=viewOrders">📦 View Orders</a>
+
   <%
     Boolean loaded = (Boolean) session.getAttribute("loaded");
     System.out.println(loaded);

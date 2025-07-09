@@ -20,13 +20,14 @@
         %>
 
         <h2>Your Cart</h2>
+        <a href="menu.jsp">← Back to Menu</a> <br/> <br/>
         <% if (error != null && !error.isEmpty()) { %>
         <div style="color: red; font-weight: bold; margin-bottom: 10px;">
             <%= error %>
         </div>
         <% } %>
 
-        <% if (message != null && !message.trim().isEmpty()) { %>
+        <% if (message != null && !message.isEmpty()) { %>
         <div style="color: green; font-weight: bold; margin-bottom: 10px;">
             <%= message %>
         </div>
@@ -91,10 +92,18 @@
             </tr>
         </table>
 
+            <br>
+        <form action="MainController" method="post">
+            <input type="hidden" name="action" value="checkout"/>
+            <label>Shipping Address: </label>
+            <input type="text" name="shippingAddress" required/> <br>
+            <input type="submit" value="Checkout">
+        </form>
+        <br> 
         <%
             }
         %>
-
+        
         <%
             } else {
         %>
@@ -107,7 +116,6 @@
         %>
 
         <br>
-        <a href="menu.jsp">← Back to Menu</a>
-
+    
     </body>
 </html>

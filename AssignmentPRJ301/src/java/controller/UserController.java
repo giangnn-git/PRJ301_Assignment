@@ -36,7 +36,6 @@ public class UserController extends HttpServlet {
         try {
             String action = request.getParameter("action");
             if ("login".equals(action)) {
-                System.out.println("LoginACtion");
                 url = handleLogin(request, response);
             } else if ("logout".equals(action)) {
                 url = handleLogout(request, response);
