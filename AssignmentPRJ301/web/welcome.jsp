@@ -21,11 +21,11 @@
         <a href="MainController?action=logout"">Log Out</a> <br>
         <a href="MainController?action=viewOrders">📦 View Orders</a>
 
-  <%
-    Boolean loaded = (Boolean) session.getAttribute("loaded");
-    System.out.println(loaded);
-    if (loaded == null || !loaded) {
-%>
+        <%
+          Boolean loaded = (Boolean) session.getAttribute("loaded");
+          System.out.println(loaded);
+          if (loaded == null || !loaded) {
+        %>
         <form id="autoForm" action="MainController" method="post">
             <input type="hidden" name="action" value="openCategory"/>
         </form>
@@ -50,18 +50,23 @@
                     <input type="submit" value="Xem thuc don"/>
                 </form>
             </div>
-            <div><img src="<%=l.getImage()%>" alt="Category Image" /></div>
+            <div>
+                <img
+                    src="<%= request.getContextPath() + "/assets/image/" + l.getImage().replaceFirst("^.*/", "") %>"
+                    alt="Category Image"
+                    />
+            </div>
         </div>
         <%}
             }%>
-            <%
-            if(AuthUtils.isAdmin(request)){
-            %>
-            <a href="productForm.jsp">Add new food</a>
-            <form action="MainController" method="post">
-                <input type="hidden" name="action" value="store"/>
-                <input type="submit" value ="xemKho"/>
-            </form>
-            <%}%>
+        <%
+        if(AuthUtils.isAdmin(request)){
+        %>
+        <a href="productForm.jsp">Add new food</a>
+        <form action="MainController" method="post">
+            <input type="hidden" name="action" value="store"/>
+            <input type="submit" value ="xemKho"/>
+        </form>
+        <%}%>
     </body>
 </html>
