@@ -20,10 +20,7 @@ public class CartDAO {
     private static final String FIND_CART_BY_USER = "SELECT cartId FROM tblCarts WHERE userId = ?";
     private static final String CREATE_CART = "INSERT INTO tblCarts (userId) OUTPUT INSERTED.cartId VALUES (?)";
     private static final String FIND_CART_ITEMS
-            = "SELECT ci.productId, p.productName, p.price, ci.quantity, ci.note "
-            + "FROM tblCartItems ci "
-            + "JOIN tblProducts p ON ci.productId = p.productId "
-            + "WHERE ci.cartId = ?";
+            = "SELECT ci.productId, p.productName, p.price, ci.quantity, ci.note FROM tblCartItems ci JOIN tblProducts p ON ci.productId = p.productId WHERE ci.cartId = ?";
 
     private static final String CHECK_ITEM_EXIST = "SELECT quantity FROM tblCartItems WHERE cartId = ? AND productId = ?";
     private static final String INSERT_ITEM = "INSERT INTO tblCartItems (cartId, productId, quantity, note) VALUES (?, ?, ?, ?)";
@@ -39,7 +36,6 @@ public class CartDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         int cartId = -1;
-
         try {
             conn = DbUtils.getConnection();
             ps = conn.prepareStatement(FIND_CART_BY_USER);

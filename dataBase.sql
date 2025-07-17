@@ -22,9 +22,10 @@ CREATE TABLE dbo.tblUsers (
     fullName NVARCHAR(100) NOT NULL,
     email NVARCHAR(100) NOT NULL UNIQUE,
     password NVARCHAR(255) NOT NULL,
-    phone NVARCHAR(20),
+    phone NVARCHAR(20) UNIQUE,
     address NVARCHAR(255),
-    role NVARCHAR(20) NOT NULL CHECK (role IN ('ADMIN', 'CUSTOMER', 'SHIPPER'))
+    role NVARCHAR(20) NOT NULL CHECK (role IN ('ADMIN', 'CUSTOMER', 'SHIPPER')),
+    wallet INT NOT NULL DEFAULT 0
 );
 GO
 
@@ -102,6 +103,7 @@ CREATE TABLE tblCartItems (
     cartId INT NOT NULL,
     productId INT NOT NULL,
     quantity INT NOT NULL,
+	note NVARCHAR(500),
     FOREIGN KEY (cartId) REFERENCES tblCarts(cartId),
     FOREIGN KEY (productId) REFERENCES tblProducts(productId)
 );
@@ -127,3 +129,11 @@ VALUES
 (1, 12, 6),
 (1, 13, 1),
 (1, 14, 2);
+
+CREATE TABLE tblPayment (
+    so INT IDENTITY(1,1) PRIMARY KEY,
+    phone VARCHAR(20),
+    money INT,
+    ma VARCHAR(20),
+    CONSTRAINT FK_Payment_User FOREIGN KEY (phone) REFERENCES tblUsers(phone)
+);

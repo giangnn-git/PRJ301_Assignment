@@ -118,11 +118,11 @@ public class OrderDAO {
     public List<OrderDTO> getAllOrders() {
     List<OrderDTO> list = new ArrayList<>();
     String sql = "SELECT orderId, userId, totalAmount, orderDate, status, shippingAddress FROM tblOrders";
-
+        System.out.println("trctry");
     try (
         Connection conn = DbUtils.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery()
+        ResultSet rs = ps.executeQuery();
     ) {
         while (rs.next()) {
             int orderId = rs.getInt("orderId");
@@ -141,7 +141,7 @@ public class OrderDAO {
         System.err.println("Error in getAllOrders: " + e.getMessage());
         e.printStackTrace();
     }
-
+System.out.println("sautry");
     return list;
 }
 

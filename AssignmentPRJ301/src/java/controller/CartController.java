@@ -248,7 +248,7 @@ public class CartController extends HttpServlet {
 
         String shippingAddress = request.getParameter("shippingAddress");
         double totalAmount = cart.getTotalAmount();
-
+        if(user.getWallet() >= cart.getTotalAmount()){
         //   Tạo đơn hàng
         OrderDAO orderDAO = new OrderDAO();
         int orderId = orderDAO.createOrder(user.getUserId(), cart.getItems(), totalAmount, shippingAddress);
@@ -258,7 +258,10 @@ public class CartController extends HttpServlet {
         request.getSession().removeAttribute("cart");
         request.setAttribute("message", "Order placed successfully. Order ID: #" + orderId);
         return "cart.jsp"; 
-        
+        }else{
+            request.setAttribute("checkError", "Your wallet is not enough to pay,please check it.");
+            return "payment.jsp";
+        }  
     } catch (Exception e) {
         e.printStackTrace();
         request.setAttribute("checkError", "Checkout failed. Please try again.");

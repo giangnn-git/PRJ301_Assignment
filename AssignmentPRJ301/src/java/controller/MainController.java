@@ -56,6 +56,10 @@ public class MainController extends HttpServlet {
                 || "viewOrders".equals(action);
     }
 
+        private boolean isWalletAction(String action) {
+            return "amtc".equals(action)||
+                    "paymentHistory".equals(action);
+        }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -75,6 +79,8 @@ public class MainController extends HttpServlet {
                 url = "/InventoryController";
             }else if(isOrderAction(action)){
                 url = "/OrderController";
+            }else if(isWalletAction(action)){
+                url = "/WalletController";
             }
         } catch (Exception e) {
             System.out.println("error in ProcessrRequest: " + e);
@@ -121,5 +127,7 @@ public class MainController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+
 
 }

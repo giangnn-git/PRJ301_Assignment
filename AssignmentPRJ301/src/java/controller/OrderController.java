@@ -32,8 +32,7 @@ public class OrderController extends HttpServlet {
             if ("updateOrderStatus".equals(action)) {
                 url = handleUpdateOrderStatus(request, response);
             } else if ("viewOrders".equals(action)) {
-                List<OrderDTO> orders = new OrderDAO().getAllOrders();
-                request.setAttribute("orders", orders);
+                url = handleViewOrders(request,response);
             }
         } catch (Exception e) {
         } finally {
@@ -81,7 +80,7 @@ public class OrderController extends HttpServlet {
     }// </editor-fold>
 
     private String handleUpdateOrderStatus(HttpServletRequest request, HttpServletResponse response) {
-    try {
+        try {
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         String newStatus = request.getParameter("newStatus");
 
@@ -104,7 +103,10 @@ public class OrderController extends HttpServlet {
     return "orders.jsp";   
 }
 
-
-
+    private String handleViewOrders(HttpServletRequest request, HttpServletResponse response) {
+List<OrderDTO> orders = new OrderDAO().getAllOrders();
+                request.setAttribute("orders", orders);
+                return "orders.jsp";
+    }
 
 }

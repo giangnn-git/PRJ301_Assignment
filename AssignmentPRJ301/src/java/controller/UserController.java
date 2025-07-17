@@ -178,7 +178,7 @@ public class UserController extends HttpServlet {
 
     // phone và address (cho phép null)
 
-    UserDTO user = new UserDTO(0, userName, fullName, email, password, phone, address, role);
+    UserDTO user = new UserDTO(0, userName, fullName, email, password, phone, address, role,0);
 
     if (checkError.isEmpty()) {
         if (udao.registerUser(user)) {

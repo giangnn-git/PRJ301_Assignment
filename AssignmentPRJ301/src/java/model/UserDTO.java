@@ -18,11 +18,12 @@ public class UserDTO {
     private String phone;
     private String address;
     private String role;
+    private int wallet;
 
     public UserDTO() {
     }
 
-    public UserDTO(int userId, String userName, String fullName, String email, String password, String phone, String address, String role) {
+    public UserDTO(int userId, String userName, String fullName, String email, String password, String phone, String address, String role,int wallet) {
         this.userId = userId;
         this.userName = userName;
         this.fullName = fullName;
@@ -31,6 +32,15 @@ public class UserDTO {
         this.phone = phone;
         this.address = address;
         this.role = role;
+        this.wallet = wallet;
+    }
+
+    public int getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(int wallet) {
+        this.wallet = wallet;
     }
 
     public int getUserId() {

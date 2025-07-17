@@ -40,19 +40,20 @@
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="cart.jsp">Gi? hàng</a></li>
-                <li class="nav-item"><a class="nav-link" href="orders.jsp">??n hàng</a></li>
-                <% if (isAdmin) { %>
+                <li class="nav-item"><a class="nav-link" href="MainController?action=viewOrders">??n hàng</a></li>
+                    <% if (isAdmin) { %>
                 <li class="nav-item"><a class="nav-link" href="MainController?action=store">Kho hàng</a></li>
                 <li class="nav-item"><a class="nav-link" href="productForm.jsp">Thêm món m?i</a></li>
-                <% } %>
+                    <% } %>
             </ul>
             <span class="navbar-text d-flex align-items-center">
                 <% if (isLoggedIn) { %>
-                    Xin chào, <span style="color:#e19f8d;font-weight:bold;margin:0 5px;"><%= user.getFullName() %></span>
-                    <a href="MainController?action=logout" class="btn btn-sm ms-3" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">??ng xu?t</a>
+                Xin chào, <span style="color:#e19f8d;font-weight:bold;margin:0 5px;"><%= user.getFullName() %></span>
+                <a href="MainController?action=paymentHistory" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">Lich su chuyen tien</a>
+                <a href="MainController?action=logout" class="btn btn-sm ms-3" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">??ng xu?t</a>
                 <% } else { %>
-                    <a href="login.jsp" class="btn btn-sm" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">??ng nh?p</a>
-                    <a href="register.jsp" class="btn btn-sm ms-2" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">??ng ký</a>
+                <a href="login.jsp" class="btn btn-sm" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">??ng nh?p</a>
+                <a href="register.jsp" class="btn btn-sm ms-2" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">??ng ký</a>
                 <% } %>
             </span>
         </div>
