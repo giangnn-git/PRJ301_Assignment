@@ -20,8 +20,10 @@ public class PaymentDAO {
 
     public static boolean addMoneyAndNote(String phone, int money, String ma) {
         UserDAO udao = new UserDAO();
+        System.out.println(phone);
         UserDTO user = udao.getUserByPhone(phone);
         boolean success = false;
+        System.out.println(user);
         if (user != null) {
             Connection conn = null;
             PreparedStatement pr = null;
@@ -82,7 +84,7 @@ public class PaymentDAO {
         PaymentDTO pm = null;
         try {
             conn = DbUtils.getConnection();
-            pr = conn.prepareStatement("SELECT so,money,ma tblPayment WHERE phone = ?");
+            pr = conn.prepareStatement("SELECT so,money,ma FROM tblPayment WHERE phone = ?");
             pr.setString(1, phone);
             rs = pr.executeQuery();
             while(rs.next()){

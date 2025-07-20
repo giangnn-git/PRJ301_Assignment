@@ -39,17 +39,18 @@ public class WalletController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url ="welcome.jsp";
+        String url = "welcome.jsp";
         String action = request.getParameter("action");
-        
+
         try {
-            if("amtc".equals(action)){
-                url= handleAddMoneyToCustomers(request,response);
-            }else if("paymentHistory".equals(action)){
-                url = handlePHistory(request,response);
+            if ("amtc".equals(action)) {
+                url = handleAddMoneyToCustomers(request, response);
+            } else if ("paymentHistory".equals(action)) {
+                url = handlePHistory(request, response);
             }
         } catch (Exception e) {
         } finally {
+            System.out.println("day la kiem tra url " + url);
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
@@ -94,7 +95,7 @@ public class WalletController extends HttpServlet {
     }// </editor-fold>
 
     private String handleAddMoneyToCustomers(HttpServletRequest request, HttpServletResponse response) {
-        String message ="";
+        String message = "";
         String url = "";
         String phone = request.getParameter("phone");
         UserDAO udao = new UserDAO();
@@ -103,30 +104,33 @@ public class WalletController extends HttpServlet {
         String ma = request.getParameter("ma");
 
         PaymentDAO pdao = new PaymentDAO();
-        
-        if(pdao.addMoneyAndNote(phone,money,ma)){
+
+        if (pdao.addMoneyAndNote(phone, money, ma)) {
             System.out.println("5");
             message = "add successfully" + phone;
             udao.tangTien(money, phone);
-            url="cart.jsp";
-        }else{
+            EmailUtils.sendTransactionEmail(user.getEmail(),user.getFullName(),user.getPhone(),money,ma);
+            url = "cart.jsp";
+        } else {
             System.out.println("6");
             message = "Error!!!";
-            url="payment.jsp";
+            url = "payment.jsp";
         }
-        request.setAttribute("message",message);
+        request.setAttribute("message", message);
         return url;
     }
 
     private String handlePHistory(HttpServletRequest request, HttpServletResponse response) {
-        if(AuthUtils.isLoggedIn(request)){
-        UserDTO user = AuthUtils.getCurrentUser(request);
-        PaymentDAO pmdao = new PaymentDAO();
+        if (AuthUtils.isLoggedIn(request)) {
+            UserDTO user = AuthUtils.getCurrentUser(request);
+            PaymentDAO pmdao = new PaymentDAO();
             List<PaymentDTO> list = pmdao.getByPhone(user.getPhone());
             HttpSession session = request.getSession();
+            String action = request.getParameter("action");
+            request.setAttribute("action", action);
             session.setAttribute("list", list);
-        return "payment.jsp";
-    }
+            return "payment.jsp";
+        }
         return "login.jsp";
     }
 

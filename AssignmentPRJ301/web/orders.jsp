@@ -21,6 +21,8 @@
         <div class="main-block">
             <h2 class="main-title mb-4">Tất cả đơn hàng</h2>
             <%
+                if(AuthUtils.isLoggedIn(request)){
+                user = AuthUtils.getCurrentUser(request);
                 String msg = (String) request.getAttribute("message");
                 String err = (String) request.getAttribute("checkError");
                 if (msg != null) { %>
@@ -37,17 +39,25 @@
                     <thead class="table-dark">
                         <tr>
                             <th>Mã đơn</th>
+                            <%if(AuthUtils.isAdmin(request)){%>
                             <th>User ID</th>
+                            <%}%>
                             <th>Tổng tiền</th>
                             <th>Ngày đặt</th>
                             <th>Trạng thái</th>
                             <th>Địa chỉ giao hàng</th>
+                            <%if(AuthUtils.isAdmin(request)){%>
                             <th>Thao tác</th>
+                            <%}%>
+                            
                         </tr>
                     </thead>
                     <tbody>
                     <%
+                        if(AuthUtils.isAdmin(request)){
                         for (OrderDTO o : orders) {
+                        
+                        
                     %>
                         <tr>
                             <td><%= o.getOrderId() %></td>
@@ -70,9 +80,20 @@
                                 </form>
                             </td>
                         </tr>
-                    <%
-                        }
-                    %>
+                    <%}%>
+                        <%}else if(AuthUtils.isMember(request)){
+                        for (OrderDTO o : orders) {  
+                        if(user.getUserId()==o.getUserId()){
+                            %>
+                        <tr>
+                            <td><%= o.getOrderId() %></td>
+                            <td><%= o.getTotalAmount() %></td>
+                            <td><%= o.getOrderDate() %></td>
+                            <td><%= o.getStatus() %></td>
+                            <td><%= o.getShippingAddress() %></td>
+                        <%}}%>
+                        
+                        <%}%>
                     </tbody>
                 </table>
             </div>
@@ -87,5 +108,8 @@
     </div>
     <%@include file="footer.jsp" %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <%}else{
+response.sendRedirect("login.jsp");
+}%>
 </body>
 </html>

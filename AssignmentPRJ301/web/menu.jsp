@@ -16,6 +16,7 @@
 </head>
 <body>
     <%@include file="header.jsp" %>
+    <a href="welcome.jsp">back</a>
     <div class="container py-5">
       <h2 class="main-title mb-4">Thực đơn</h2>
       <% String message = (String) request.getAttribute("message"); %>

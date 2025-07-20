@@ -16,10 +16,25 @@
           .main-title {color: #e19f8d;}
           .main-btn {color: #e19f8d; border: 2px solid #e19f8d; border-radius: 20px;}
           .main-btn:hover {background: #e19f8d; color: #7b4a10;}
+
+          /* Đảm bảo body chiếm đủ chiều cao để đẩy footer xuống đáy */
+          html, body {
+              height: 100%;
+              margin: 0;
+              display: flex;
+              flex-direction: column;
+          }
+
+          main {
+              flex: 1;
+          }
         </style>
     </head>
     <body>
         <%@include file="header.jsp" %>
+
+        <!-- Bọc phần nội dung chính vào <main> -->
+        <main>
         <div class="container py-5">
         <%
             if (AuthUtils.isLoggedIn(request)) {
@@ -100,13 +115,12 @@
             }
         %>
         </div>
-        <% } else { %>
-        <div class="alert alert-danger">
-            <%= AuthUtils.getAccessDeniedMessage("cart.jsp") %><br/>
-            (Hoặc <a href="<%= AuthUtils.getLoginURL() %>" class="text-danger">Đăng nhập</a>)
+        <% } else { 
+        response.sendRedirect("login.jsp");
+} %>
         </div>
-        <% } %>
-        </div>
+        </main>
+
         <%@include file="footer.jsp" %>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>

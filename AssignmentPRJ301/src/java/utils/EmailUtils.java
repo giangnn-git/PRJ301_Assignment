@@ -18,8 +18,8 @@ Tao mật khẩu ứng dụng: https://myaccount.google.com/apppasswords
 public class EmailUtils {
     
     // Thông tin tài khoản email dùng để gửi (thay đổi thông tin này)
-    private static final String EMAIL_USERNAME = "thuchanhprj301@gmail.com";
-    private static final String EMAIL_PASSWORD = "ivdjxgimbriruiyv";
+    private static final String EMAIL_USERNAME = "turbonice12@gmail.com";
+    private static final String EMAIL_PASSWORD = "povtjjrrspbhcdxz";
     
     // Cấu hình SMTP server
     private static final String SMTP_HOST = "smtp.gmail.com";
