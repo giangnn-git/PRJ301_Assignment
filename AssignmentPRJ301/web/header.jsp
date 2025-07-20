@@ -8,12 +8,12 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
     .navbar-custom {
-        background: #7b4a10 !important;
+        background:rgb(245, 192, 27) !important;
         border-radius: 0 0 18px 18px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .navbar-brand {
-        color: #e19f8d !important;
+        color: #f9eeeb !important;
         font-weight: bold;
         font-size: 1.7rem;
         letter-spacing: 1px;
@@ -29,6 +29,7 @@
     .navbar-toggler {
         border-color: #e19f8d;
     }
+    
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-custom mb-4">
@@ -48,7 +49,7 @@
             </ul>
             <span class="navbar-text d-flex align-items-center">
                 <% if (isLoggedIn) { %>
-                    Hello, <span style="color:#e19f8d;font-weight:bold;margin:0 5px;"><%= user.getFullName() %></span>
+                    Hello, <span style="color:#000000;font-weight:bold;margin:0 5px;"><%= user.getFullName() %></span>
                     <a href="MainController?action=paymentHistory" style="background:#e19f8d;color:#7b4a10;border-radius:18px;" class="btn btn-sm ms-2">Payment History</a>
                     <a href="MainController?action=logout" class="btn btn-sm ms-3" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">Logout</a>
                 <% } else { %>

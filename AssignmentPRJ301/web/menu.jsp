@@ -12,11 +12,25 @@
       .main-title {color: #e19f8d;}
       .main-btn {color: #e19f8d; border: 2px solid #e19f8d; border-radius: 20px;}
       .main-btn:hover {background: #e19f8d; color: #7b4a10;}
+        .back-link {
+        color: #e17d64; /* hồng cam đậm */
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 16px;
+        margin: 10px 20px;
+        display: inline-block;
+        transition: color 0.3s, text-shadow 0.3s;
+    }
+
+    .back-link:hover {
+        color: #d65b4f; /* đậm hơn khi hover */
+        text-shadow: 1px 1px 2px #e6a5a0;
+    }
     </style>
 </head>
-<body>
+<body style="background-color: #f3e5e0;">
     <%@include file="header.jsp" %>
-    <a href="welcome.jsp">back</a>
+    <a class="back-link" href="welcome.jsp"><h1>◀ Back</h1></a>
     <div class="container py-5">
       <h2 class="main-title mb-4">Thực đơn</h2>
       <% String message = (String) request.getAttribute("message"); %>
