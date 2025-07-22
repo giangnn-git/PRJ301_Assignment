@@ -97,4 +97,26 @@ public class InventoryDAO {
     return false;
 }
 
+    public boolean addIntoInve(int i, int i0, int productId, int i1) {
+        Connection conn = null;
+        PreparedStatement pr = null;
+        ResultSet rs = null;
+        boolean success = false;
+         try {
+            conn = DbUtils.getConnection();
+            pr = conn.prepareStatement("INSERT INTO tblInventory (inventoryId,productId,quantityAvailable) VALUES (?,?,?) ");
+            pr.setInt(1, i0);
+            pr.setInt(2, productId);
+            pr.setInt(3, i1);
+             int count = pr.executeUpdate();
+             
+            success= (count>0);
+        } catch (Exception e) {
+             System.out.println(e.getMessage());
+        } finally {
+             closeResource(conn, pr, null);
+        }
+         return success;
+    }
+
 }

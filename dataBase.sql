@@ -137,3 +137,25 @@ CREATE TABLE tblPayment (
     ma VARCHAR(20),
     CONSTRAINT FK_Payment_User FOREIGN KEY (phone) REFERENCES tblUsers(phone)
 );
+
+CREATE TABLE tblOrder (
+    orderId INT IDENTITY(1,1) PRIMARY KEY,
+    userId INT NOT NULL,
+    totalAmount FLOAT NOT NULL CHECK (totalAmount >= 0),
+    orderDate DATETIME DEFAULT GETDATE(),
+    status NVARCHAR(20) NOT NULL CHECK (status IN ('PENDING', 'CONFIRMED', 'DELIVERED', 'CANCELED')),
+    shippingAddress NVARCHAR(255),
+    
+    FOREIGN KEY (userId) REFERENCES tblUsers(userId)
+);
+
+CREATE TABLE tblOrderItems (
+    orderItemId INT IDENTITY(1,1) PRIMARY KEY,
+    orderId INT NOT NULL,
+    productId INT NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    unitPrice FLOAT NOT NULL CHECK (unitPrice >= 0),
+
+    FOREIGN KEY (orderId) REFERENCES tblOrder(orderId),
+    FOREIGN KEY (productId) REFERENCES tblProducts(productId)
+);

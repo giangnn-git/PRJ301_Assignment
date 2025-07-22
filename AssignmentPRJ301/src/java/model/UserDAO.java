@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import utils.DbUtils;
+import utils.PasswordUtils;
+import static utils.PasswordUtils.encryptSHA256;
 
 /**
  *
@@ -149,6 +151,7 @@ public class UserDAO {
             ps.setString(1, user.getUserName());
             ps.setString(2, user.getFullName());
             ps.setString(3, user.getEmail());
+            user.setPassword(PasswordUtils.encryptSHA256(user.getPassword()));
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getPhone());
             ps.setString(6, user.getAddress());
@@ -203,4 +206,18 @@ public class UserDAO {
         }
     }
 
+     public boolean updatePassword(int userId, String newPassword) {
+        String sql = "UPDATE tblUsers SET password = ? WHERE userId = ?";
+        try {
+            Connection conn = DbUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, newPassword);
+            ps.setInt(2, userId);
+            int result = ps.executeUpdate();
+            return result > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

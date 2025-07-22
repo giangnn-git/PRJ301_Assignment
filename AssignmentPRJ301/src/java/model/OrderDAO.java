@@ -18,7 +18,7 @@ import utils.DbUtils;
  */
 public class OrderDAO {
 
-    private static final String INSERT_ORDER = "INSERT INTO tblOrders (userId, totalAmount, orderDate, status, shippingAddress) "
+    private static final String INSERT_ORDER = "INSERT INTO tblOrder (userId, totalAmount, orderDate, status, shippingAddress) "
             +          "OUTPUT INSERTED.orderId VALUES (?, ?, GETDATE(), 'PENDING', ?)";
     
     private static final String INSERT_ITEM = "INSERT INTO tblOrderItems (orderId, productId, quantity, unitPrice) VALUES (?, ?, ?, ?)";
@@ -64,7 +64,7 @@ public class OrderDAO {
     public boolean updateOrderStatus(int orderId, String newStatus) {
     try (
         Connection conn = DbUtils.getConnection();
-        PreparedStatement ps = conn.prepareStatement("UPDATE tblOrders SET status = ? WHERE orderId = ?")
+        PreparedStatement ps = conn.prepareStatement("UPDATE tblOrder SET status = ? WHERE orderId = ?")
     ) {
         ps.setString(1, newStatus);
         ps.setInt(2, orderId);
@@ -117,7 +117,7 @@ public class OrderDAO {
 
     public List<OrderDTO> getAllOrders() {
     List<OrderDTO> list = new ArrayList<>();
-    String sql = "SELECT orderId, userId, totalAmount, orderDate, status, shippingAddress FROM tblOrders";
+    String sql = "SELECT orderId, userId, totalAmount, orderDate, status, shippingAddress FROM tblOrder";
         System.out.println("trctry");
     try (
         Connection conn = DbUtils.getConnection();

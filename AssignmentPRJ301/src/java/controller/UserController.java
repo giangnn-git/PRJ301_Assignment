@@ -15,6 +15,8 @@ import model.CartDAO;
 import model.CartDTO;
 import model.UserDAO;
 import model.UserDTO;
+import utils.PasswordUtils;
+import static utils.PasswordUtils.encryptSHA256;
 
 /**
  *
@@ -92,7 +94,7 @@ public class UserController extends HttpServlet {
         HttpSession session = request.getSession();
         String userName = request.getParameter("strUserName");
         String password = request.getParameter("strPassword");
-//        password = PasswordUtils.encryptSHA256(password);
+        password = PasswordUtils.encryptSHA256(password);
         UserDAO userDAO = new UserDAO();
         if (userDAO.login(userName, password)) {
             // Dang nhap thanh cong
@@ -181,6 +183,7 @@ public class UserController extends HttpServlet {
     UserDTO user = new UserDTO(0, userName, fullName, email, password, phone, address, role,0);
 
     if (checkError.isEmpty()) {
+        
         if (udao.registerUser(user)) {
             message = "Register successful! You can now log in.";
             request.setAttribute("message", message);

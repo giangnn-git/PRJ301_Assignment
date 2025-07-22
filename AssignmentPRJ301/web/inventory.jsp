@@ -16,6 +16,7 @@
     </style>
 </head>
 <body>
+    <%if(AuthUtils.isAdmin(request)){%>
     <%@include file="header.jsp" %>
     <div class="container py-5">
       <div class="main-block">
@@ -71,5 +72,8 @@
     </div>
     <%@include file="footer.jsp" %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <%}else{
+response.sendRedirect("login.jsp");
+}%>
 </body>
 </html>

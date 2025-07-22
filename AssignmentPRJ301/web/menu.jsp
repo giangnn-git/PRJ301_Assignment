@@ -30,7 +30,7 @@
 </head>
 <body style="background-color: #f3e5e0;">
     <%@include file="header.jsp" %>
-    <a class="back-link" href="welcome.jsp"><h1>◀ Back</h1></a>
+    <a class="back-link" href="welcome.jsp"><h1>◀ Trở Lại</h1></a>
     <div class="container py-5">
       <h2 class="main-title mb-4">Thực đơn</h2>
       <% String message = (String) request.getAttribute("message"); %>

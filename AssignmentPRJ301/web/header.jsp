@@ -1,3 +1,5 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%@ page import="model.UserDTO" %>
 <%@ page import="utils.AuthUtils" %>
 <%
@@ -40,21 +42,21 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="cart.jsp">Cart</a></li>
-                <li class="nav-item"><a class="nav-link" href="MainController?action=viewOrders">Orders</a></li>
+                <li class="nav-item"><a class="nav-link" href="cart.jsp">Giỏ Hàng</a></li>
+                <li class="nav-item"><a class="nav-link" href="MainController?action=viewOrders">Đơn Hàng</a></li>
                 <% if (isAdmin) { %>
-                    <li class="nav-item"><a class="nav-link" href="MainController?action=store">Inventory</a></li>
-                    <li class="nav-item"><a class="nav-link" href="productForm.jsp">Add New Dish</a></li>
+                    <li class="nav-item"><a class="nav-link" href="MainController?action=store">Kho</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productForm.jsp">Thêm Món</a></li>
                 <% } %>
             </ul>
             <span class="navbar-text d-flex align-items-center">
                 <% if (isLoggedIn) { %>
-                    Hello, <span style="color:#000000;font-weight:bold;margin:0 5px;"><%= user.getFullName() %></span>
-                    <a href="MainController?action=paymentHistory" style="background:#e19f8d;color:#7b4a10;border-radius:18px;" class="btn btn-sm ms-2">Payment History</a>
-                    <a href="MainController?action=logout" class="btn btn-sm ms-3" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">Logout</a>
+                    Xin Chào, <span style="color:#000000;font-weight:bold;margin:0 5px;"><%= user.getFullName() %></span>
+                    <a href="MainController?action=paymentHistory" style="background:#e19f8d;color:#7b4a10;border-radius:18px;" class="btn btn-sm ms-2">Nạp Tiền</a>
+                    <a href="MainController?action=logout" class="btn btn-sm ms-3" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">Đăng Xuất</a>
                 <% } else { %>
-                    <a href="login.jsp" class="btn btn-sm" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">Login</a>
-                    <a href="register.jsp" class="btn btn-sm ms-2" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">Register</a>
+                    <a href="login.jsp" class="btn btn-sm" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">Đăng Nhập</a>
+                    <a href="register.jsp" class="btn btn-sm ms-2" style="background:#e19f8d;color:#7b4a10;border-radius:18px;">Đăng Ký</a>
                 <% } %>
             </span>
         </div>

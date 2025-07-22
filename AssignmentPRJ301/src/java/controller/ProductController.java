@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import model.InventoryDAO;
 import model.ProductDAO;
 import model.ProductDTO;
 
@@ -35,8 +36,6 @@ public class ProductController extends HttpServlet {
                 url = handleSearch(request,response);
             }else if("addProduct".equals(action)){
                 url = handleAddProduct(request,response);
-            }else if("changeStatus".equals(action)){
-                url = handleChangeStatus(request,response);
             }else if("toProduct".equals(action)){
                 url = handleToProduct(request,response);
             }
@@ -112,7 +111,7 @@ private String handleAddProduct(HttpServletRequest request, HttpServletResponse 
     String availableStr = request.getParameter("available");
     String categoryStr = request.getParameter("categoryId");
     double price = 0;
-    boolean available = false;
+    boolean available = true;
     int categoryId = 0;
     ProductDTO p = null;
     ProductDAO pdao = new ProductDAO();
@@ -152,7 +151,7 @@ private String handleAddProduct(HttpServletRequest request, HttpServletResponse 
     }
     
       if (categoryStr == null || categoryStr.trim().isEmpty()) {
-        checkError += "Price is required.<br/>";
+        checkError += "category is required.+<br/>";
     } else {
         try {
             categoryId = Integer.parseInt(categoryStr);
@@ -163,14 +162,18 @@ private String handleAddProduct(HttpServletRequest request, HttpServletResponse 
             checkError += "Invalid categoryId format.<br/>";
         }
     }
-
+    System.out.println(checkError);
     // If no error, create ProductDTO and add to DB
     if (checkError.isEmpty()) {
+        System.out.println("2");
         p = new ProductDTO(0, productName, description, price, imageUrl, available, categoryId);
         if (!pdao.addProduct(p)) {
             checkError += "Cannot add product: " + p.getProductName() + "<br/>";
         } else {
-            message = "Add successfully.";
+            InventoryDAO idao = new InventoryDAO();
+            if(idao.addIntoInve(0,1,p.getProductId(),0))message = "Add successfully.";;
+            
+            
         }
     }
 
@@ -182,12 +185,6 @@ private String handleAddProduct(HttpServletRequest request, HttpServletResponse 
 
     
 
-    private String handleChangeStatus(HttpServletRequest request, HttpServletResponse response) {
-//        int productId = Integer.parseInt(request.getParameter("productId"));
-//        boolean available = Boolean.parseBoolean(request.getParameter("available"));
-//        if(pdao.u)
-        return "";
-    }
 
     private String handleToProduct(HttpServletRequest request, HttpServletResponse response) {
         int categoryId = Integer.parseInt(request.getParameter("categoryId"));

@@ -66,7 +66,7 @@ public class MainController extends HttpServlet {
         String url = WELCOME;
         try {
             String action = request.getParameter("action");
-            System.out.println(action);
+            System.out.println(action + "11");
             if (isUserAction(action)) {
                 url = "/UserController";
             } else if (isProductAction(action)) {

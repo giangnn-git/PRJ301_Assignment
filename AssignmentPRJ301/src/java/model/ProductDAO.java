@@ -18,7 +18,7 @@ import utils.DbUtils;
  */
 public class ProductDAO {
     
-    private static final String GET_PRODUCT_BY_ID = "SELECT productId, productName, description, price, imageUrl, available, categoryId FROM tblProducts WHERE productId = ?";
+    private static final String GET_PRODUCT_BY_ID = "SELECT productId, productName, description, price, imageUrl, available, categoryId FROM tblProducts WHERE productId = ? ";
     
     public static boolean isExist(String productName){
         return getProductByName(productName)!=null?true:false;
@@ -32,7 +32,7 @@ public class ProductDAO {
         ResultSet rs = null;
         try {
             conn = DbUtils.getConnection();
-            ps = conn.prepareStatement("SELECT productId,description , price,imageUrl,available,categoryId FROM tblProducts WHERE productName LIKE ?");
+            ps = conn.prepareStatement("SELECT productId,description , price,imageUrl,available,categoryId FROM tblProducts WHERE productName LIKE ? ");
             ps.setString(1, "%"+productName +"%");
             rs = ps.executeQuery();
             
@@ -61,9 +61,10 @@ public class ProductDAO {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+        System.out.println(p);
         try {
             conn = DbUtils.getConnection();
-            ps = conn.prepareStatement("INSERT INTO tblProducts (productName, description, price, imageUrl, available, categoryId) SELECT ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM tblCategories WHERE categoryId = ?",Statement.RETURN_GENERATED_KEYS);
+            ps = conn.prepareStatement("INSERT INTO tblProducts (productName, description, price, imageUrl, available, categoryId) SELECT ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM tblCategory WHERE categoryId = ?)",Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, p.getProductName());
             ps.setString(2, p.getDescription());
             ps.setDouble(3, p.getPrice());
@@ -107,7 +108,7 @@ public class ProductDAO {
         ProductDTO p = null;
         try {
             conn = DbUtils.getConnection();
-            ps = conn.prepareStatement("SELECT productId,productName,description,price,imageUrl,available FROM tblProducts WHERE categoryId = ?");
+            ps = conn.prepareStatement("SELECT p.productId, p.productName,  p.description, p.price, p.imageUrl, p.available FROM  tblProducts p INNER JOIN  tblInventory i ON p.productId = i.productId WHERE  p.categoryId = ? AND i.quantityAvailable > 0;");
             ps.setInt(1, categoryId);
             rs = ps.executeQuery();
             

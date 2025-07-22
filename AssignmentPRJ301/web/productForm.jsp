@@ -16,13 +16,15 @@
     </style>
 </head>
 <body>
-    <%@include file="header.jsp" %>
+        <%@include file="header.jsp" %>
+    <%if(AuthUtils.isAdmin(request)){%>
+
     <div class="container py-5">
       <div class="row justify-content-center">
         <div class="col-lg-7 main-block">
           <h2 class="main-title mb-4">Thêm / Sửa sản phẩm</h2>
-          <form action="MainController" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="action" value="saveProduct"/>
+          <form action="MainController" method="post" >
+            <input type="hidden" name="action" value="addProduct"/>
             <div class="mb-3">
               <label class="form-label" for="productName">Tên sản phẩm</label>
               <input type="text" class="form-control" id="productName" name="productName" value="<%= request.getAttribute("productName") != null ? request.getAttribute("productName") : "" %>" required/>
@@ -36,8 +38,12 @@
               <input type="number" class="form-control" id="price" name="price" value="<%= request.getAttribute("price") != null ? request.getAttribute("price") : "" %>" required/>
             </div>
             <div class="mb-3">
-              <label class="form-label" for="image">Hình ảnh</label>
-              <input type="file" class="form-control" id="image" name="image"/>
+              <label class="form-label" for="imageUrl">Hình ảnh</label>
+              <input type="file" class="form-control" id="image" name="imageUrl"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="categoryId">Loại</label>
+              <input type="number" class="form-control" id="imagecategoryId" name="categoryId"/>
             </div>
             <button type="submit" class="btn main-btn w-100">Lưu sản phẩm</button>
           </form>
@@ -58,7 +64,12 @@
         </div>
       </div>
     </div>
+ 
+    <%}else{%>
+    <%=AuthUtils.getAccessDeniedMessage("This page")%> 
+<%}%>
     <%@include file="footer.jsp" %>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

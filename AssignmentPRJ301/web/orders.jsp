@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%@ page import="model.OrderDTO" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>

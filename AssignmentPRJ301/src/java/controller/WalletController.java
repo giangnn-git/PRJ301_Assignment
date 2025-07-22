@@ -93,32 +93,61 @@ public class WalletController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+private String handleAddMoneyToCustomers(HttpServletRequest request, HttpServletResponse response) {
+    String message = "";
+    String url = "payment.jsp"; // default
 
-    private String handleAddMoneyToCustomers(HttpServletRequest request, HttpServletResponse response) {
-        String message = "";
-        String url = "";
-        String phone = request.getParameter("phone");
-        UserDAO udao = new UserDAO();
-        UserDTO user = udao.getUserByPhone(phone);
-        int money = Integer.parseInt(request.getParameter("money"));
-        String ma = request.getParameter("ma");
+    String phone = request.getParameter("phone");
+    String moneyStr = request.getParameter("money");
+    String ma = request.getParameter("ma");
 
-        PaymentDAO pdao = new PaymentDAO();
+    if (phone == null || phone.trim().isEmpty() || !phone.matches("\\d+")) {
+        message +="Invalid Phone number!<br/>";
+    }
 
-        if (pdao.addMoneyAndNote(phone, money, ma)) {
-            System.out.println("5");
-            message = "add successfully" + phone;
-            udao.tangTien(money, phone);
-            EmailUtils.sendTransactionEmail(user.getEmail(),user.getFullName(),user.getPhone(),money,ma);
-            url = "cart.jsp";
-        } else {
-            System.out.println("6");
-            message = "Error!!!";
-            url = "payment.jsp";
-        }
+    if (ma == null || ma.trim().isEmpty()) {
+        message +="Transaction code is required!<br/>";
+    }
+
+    int money = 0;
+    try {
+        money = Integer.parseInt(moneyStr);
+        if (money <= 0) throw new NumberFormatException();
+    } catch (NumberFormatException e) {
+        message +="Invalid money amount!<br/>";
+    }
+
+
+    UserDAO udao = new UserDAO();
+    UserDTO user = udao.getUserByPhone(phone);
+    if (user == null) {
+        message += "User not found!";
+    }
+
+        if(!message.isEmpty()){
         request.setAttribute("message", message);
         return url;
     }
+        
+    PaymentDAO pdao = new PaymentDAO();
+    if (pdao.addMoneyAndNote(phone, money, ma)) {
+        udao.tangTien(money, phone);
+        try {
+            EmailUtils.sendTransactionEmail(user.getEmail(), user.getFullName(), user.getPhone(), money, ma);
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = "Added successfully but failed to send email.";
+        }
+        message = "Add successfully for phone: " + phone;
+        url = "cart.jsp";
+    } else {
+        message = "Error adding money!";
+    }
+
+    request.setAttribute("message", message);
+    return url;
+}
+
 
     private String handlePHistory(HttpServletRequest request, HttpServletResponse response) {
         if (AuthUtils.isLoggedIn(request)) {

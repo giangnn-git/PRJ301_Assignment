@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.OrderDAO;
 import model.OrderDTO;
+import utils.AuthUtils;
 
 /**
  *
@@ -80,6 +81,8 @@ public class OrderController extends HttpServlet {
     }// </editor-fold>
 
     private String handleUpdateOrderStatus(HttpServletRequest request, HttpServletResponse response) {
+        String url = "";
+        if(AuthUtils.isAdmin(request)){
         try {
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         String newStatus = request.getParameter("newStatus");
@@ -100,7 +103,11 @@ public class OrderController extends HttpServlet {
         request.setAttribute("checkError", "Error: " + e.getMessage());
     }
 
-    return "orders.jsp";   
+    url = "orders.jsp";   
+    }else{
+            url = "login.jsp";
+        }
+        return url;
 }
 
     private String handleViewOrders(HttpServletRequest request, HttpServletResponse response) {

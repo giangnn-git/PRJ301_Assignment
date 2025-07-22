@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.InventoryDAO;
 import model.InventoryDTO;
+import utils.AuthUtils;
 
 /**
  *
@@ -100,6 +101,8 @@ public class InventoryController extends HttpServlet {
     }
 
     private String handleNhapHang(HttpServletRequest request, HttpServletResponse response) {
+        String url = "";
+        if(AuthUtils.isAdmin(request)){
         HttpSession session = request.getSession();
         List<InventoryDTO> list = (List<InventoryDTO>) session.getAttribute("list");
         InventoryDAO idao = new InventoryDAO();
@@ -120,7 +123,12 @@ public class InventoryController extends HttpServlet {
         }
         //row la so luong dong ma khi so luong nhap hang != 0
         request.setAttribute("row", row);
-        return handleStore(request, response);
+        url =  handleStore(request, response);
     }
+    else{
+        url = "login.jsp";
+    }
+    return url;
 
+}
 }
