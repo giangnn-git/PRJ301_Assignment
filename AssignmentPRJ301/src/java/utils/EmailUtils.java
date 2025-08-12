@@ -18,12 +18,12 @@
 //public class EmailUtils {
 //    
 //    // Thông tin tài khoản email dùng để gửi (thay đổi thông tin này)
-//    private static final String EMAIL_USERNAME = "turbonice12@gmail.com";
-//    private static final String EMAIL_PASSWORD = "povtjjrrspbhcdxz";
+//    private static final String EMAIL_USERNAME = "";
+//    private static final String EMAIL_PASSWORD = "";
 //    
 //    // Cấu hình SMTP server
-//    private static final String SMTP_HOST = "smtp.gmail.com";
-//    private static final String SMTP_PORT = "587";
+//    private static final String SMTP_HOST = " ";
+//    private static final String SMTP_PORT = " ";
 //    
 //    /**
 //     * Gửi email thông báo đăng ký thành công
