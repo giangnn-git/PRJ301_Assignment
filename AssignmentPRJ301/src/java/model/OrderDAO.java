@@ -26,8 +26,6 @@ public class OrderDAO {
     
     public int createOrder(int userId, List<CartItemDTO> items, double totalAmount, String shippingAddress) {
     int orderId = -1;
-
-
     try (Connection conn = DbUtils.getConnection()) {
         conn.setAutoCommit(false);
 
@@ -118,7 +116,6 @@ public class OrderDAO {
     public List<OrderDTO> getAllOrders() {
     List<OrderDTO> list = new ArrayList<>();
     String sql = "SELECT orderId, userId, totalAmount, orderDate, status, shippingAddress FROM tblOrder";
-        System.out.println("trctry");
     try (
         Connection conn = DbUtils.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -141,7 +138,6 @@ public class OrderDAO {
         System.err.println("Error in getAllOrders: " + e.getMessage());
         e.printStackTrace();
     }
-System.out.println("sautry");
     return list;
 }
 

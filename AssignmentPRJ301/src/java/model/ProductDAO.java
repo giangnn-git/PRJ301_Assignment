@@ -108,7 +108,7 @@ public class ProductDAO {
         ProductDTO p = null;
         try {
             conn = DbUtils.getConnection();
-            ps = conn.prepareStatement("SELECT p.productId, p.productName,  p.description, p.price, p.imageUrl, p.available FROM  tblProducts p INNER JOIN  tblInventory i ON p.productId = i.productId WHERE  p.categoryId = ? AND i.quantityAvailable > 0;");
+            ps = conn.prepareStatement("SELECT p.productId, p.productName,  p.description, p.price, p.imageUrl, p.available FROM  tblProducts p INNER JOIN  tblInventory i ON p.productId = i.productId WHERE  p.categoryId = ? AND i.quantityAvailable > 0");
             ps.setInt(1, categoryId);
             rs = ps.executeQuery();
             

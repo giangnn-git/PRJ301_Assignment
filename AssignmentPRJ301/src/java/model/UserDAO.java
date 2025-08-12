@@ -20,7 +20,7 @@ import static utils.PasswordUtils.encryptSHA256;
 public class UserDAO {
 
     private static final String FIND_USER_BY_NAME = "SELECT userId, userName, email, password, phone, address, role, fullName,wallet FROM tblUsers WHERE userName = ?";
-        private static final String FIND_USER_BY_Phone = "SELECT userId, userName, email, password, phone, address, role, fullName,wallet FROM tblUsers WHERE phone = ?";
+    private static final String FIND_USER_BY_Phone = "SELECT userId, userName, email, password, phone, address, role, fullName,wallet FROM tblUsers WHERE phone = ?";
     private static final String GET_ALL_USER = "SELECT userId, userName, email, password, phone, address, role, fullName,wallet FROM tblUsers ORDER BY userName";
     private static final String ADD_USER = "INSERT INTO tblUsers (userName, fullName, email, password, phone, address, role,wallet) VALUES (?, ?, ?, ?, ?, ?, ?,0)";
     private static final String CHECK_EMAIL = "SELECT userId FROM tblUsers WHERE email = ?";
@@ -118,7 +118,9 @@ public class UserDAO {
         List<UserDTO> userList = new ArrayList<>();
 
         try (
-                 Connection conn = DbUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(GET_ALL_USER);  ResultSet rs = ps.executeQuery()) {
+                Connection conn = DbUtils.getConnection();  
+                PreparedStatement ps = conn.prepareStatement(GET_ALL_USER);  
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 int userId = rs.getInt("userId");
                 String userName = rs.getString("userName");

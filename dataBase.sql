@@ -119,20 +119,20 @@ CREATE TABLE tblInventory (
 
 INSERT INTO tblInventory (inventoryId, productId, quantityAvailable)
 VALUES
-(1, 5, 2),
-(1, 6, 9),
-(1, 7, 7),
-(1, 8, 15),
+(1, 1, 2),
+(1, 2, 9),
+(1, 3, 7),
+(1, 4, 15),
+(1, 5, 1),
+(1, 6, 3),
+(1, 7, 4),
+(1, 8, 6),
 (1, 9, 1),
-(1, 10, 3),
-(1, 11, 4),
-(1, 12, 6),
-(1, 13, 1),
-(1, 14, 2);
+(1, 10, 2);
 
 CREATE TABLE tblPayment (
     so INT IDENTITY(1,1) PRIMARY KEY,
-    phone VARCHAR(20),
+    phone  NVARCHAR(20),
     money INT,
     ma VARCHAR(20),
     CONSTRAINT FK_Payment_User FOREIGN KEY (phone) REFERENCES tblUsers(phone)

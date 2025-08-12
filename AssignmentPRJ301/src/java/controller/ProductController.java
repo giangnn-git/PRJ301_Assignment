@@ -162,7 +162,6 @@ private String handleAddProduct(HttpServletRequest request, HttpServletResponse 
             checkError += "Invalid categoryId format.<br/>";
         }
     }
-    System.out.println(checkError);
     // If no error, create ProductDTO and add to DB
     if (checkError.isEmpty()) {
         System.out.println("2");

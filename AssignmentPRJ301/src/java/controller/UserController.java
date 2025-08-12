@@ -139,7 +139,6 @@ public class UserController extends HttpServlet {
     String address = request.getParameter("address");
     String role = "CUSTOMER"; 
 
-    //Nếu userName rỗng (chưa nhập gì), thì chỉ trả về form, không xử lý
     if (userName == null && fullName == null && email == null && password == null) {
         return "register.jsp";
     }
